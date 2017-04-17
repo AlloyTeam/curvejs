@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body><button onclick="back()">撤销</button>
+<canvas id="canvas" width="600" height="500" style="background-color: yellow;"></canvas>
+
+<script>
+
+
+    var canvas=document.getElementById("canvas");
+    var cxt=canvas.getContext("2d");
+    var img=new Image();
+    img.onload = function(){
+
+        cxt.drawImage(img,0,0);
+    }
+    img.src="test.png";
+
+
+    var arr= []
+    var rect
+    canvas.addEventListener('click',function(evt) {
+        rect = canvas.getBoundingClientRect()
+        var x = Math.round(evt.clientX - rect.left)
+        var y =Math.round( evt.clientY - rect.top)
+
+        arr.push(x,y)
+
+        draw(arr)
+    })
+
+function draw(arr){
+
+ console.log(arr.length+"--"+arr.length%8)
+}
+    function back(){
+        arr.pop()
+        arr.pop()
+        draw(arr)
+    }
+
+
+
+    console.log(arr+"")
+</script>
+</body>
+</html>
