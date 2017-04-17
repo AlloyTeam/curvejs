@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
     <title>curvejs</title>
     <style>
         html,body{
@@ -22,6 +23,7 @@
 
     <style>
         body {
+            background-color: #1e1d23;
             /*opacity: 0;*/
             display: -webkit-box;
             display: -ms-flexbox;
@@ -57,6 +59,7 @@
 
         .description {
             /*opacity: 0;*/
+            color: white;
             margin-top: -20px;
         }
 
@@ -178,40 +181,50 @@
             color: white;
             transition: color .25s ease;
         }
+
+        #container{
+            margin-top:100px ;
+        }
+
+        @media only screen and (max-width: 500px) {
+            #container canvas{
+               width: 100%;
+            }
+        }
     </style>
 </head>
 
-<body >
-<div id="container"></div>
-
-<div class="info">
-    <p class="description">
-        Made curve a dancer in HTML5 canvas.
-    </p>
-    <div class="links">
-        <a class="button blue" href="https://github.com/AlloyTeam/curvejs#usage" target="_blank">
-            <svg viewBox="0 0 180 60">
-                <path d="M10,10 C10,10 50,9.98999977 90,9.98999977 C130,9.98999977 170,10 170,10 C170,10 170.009995,20 170.009995,30 C170.009995,40 170,50 170,50 C170,50 130,50.0099983 90,50.0099983 C50,50.0099983 10,50 10,50 C10,50 9.98999977,40 9.98999977,30 C9.98999977,20 10,10 10,10 Z"></path>
-            </svg>
-            <span>Docs</span>
-        </a>
-        <a class="button blue" href="https://alloyteam.github.io/curvejs/pg/" target="_blank">
-            <svg viewBox="0 0 180 60">
-                <path d="M10,10 C10,10 50,9.98999977 90,9.98999977 C130,9.98999977 170,10 170,10 C170,10 170.009995,20 170.009995,30 C170.009995,40 170,50 170,50 C170,50 130,50.0099983 90,50.0099983 C50,50.0099983 10,50 10,50 C10,50 9.98999977,40 9.98999977,30 C9.98999977,20 10,10 10,10 Z"></path>
-            </svg>
-            <span>CodePen</span>
-        </a>
-        <a class="button green" href="https://github.com/AlloyTeam/curvejs" target="_blank">
-            <svg viewBox="0 0 180 60">
-                <path d="M10,10 C10,10 50,9.98999977 90,9.98999977 C130,9.98999977 170,10 170,10 C170,10 170.009995,20 170.009995,30 C170.009995,40 170,50 170,50 C170,50 130,50.0099983 90,50.0099983 C50,50.0099983 10,50 10,50 C10,50 9.98999977,40 9.98999977,30 C9.98999977,20 10,10 10,10 Z"></path>
-            </svg>
-            <span>GitHub</span>
-        </a>
+<body>
+    <div id="container"></div>
+    <div class="info">
+        <p class="description">
+            Made curve a dancer in HTML5 canvas.
+        </p>
+        <div class="links">
+            <a class="button blue" href="https://github.com/AlloyTeam/curvejs#usage" target="_blank">
+                <svg viewBox="0 0 180 60">
+                    <path d="M10,10 C10,10 50,9.98999977 90,9.98999977 C130,9.98999977 170,10 170,10 C170,10 170.009995,20 170.009995,30 C170.009995,40 170,50 170,50 C170,50 130,50.0099983 90,50.0099983 C50,50.0099983 10,50 10,50 C10,50 9.98999977,40 9.98999977,30 C9.98999977,20 10,10 10,10 Z"></path>
+                </svg>
+                <span>Docs</span>
+            </a>
+            <a class="button blue" href="https://alloyteam.github.io/curvejs/pg/" target="_blank">
+                <svg viewBox="0 0 180 60">
+                    <path d="M10,10 C10,10 50,9.98999977 90,9.98999977 C130,9.98999977 170,10 170,10 C170,10 170.009995,20 170.009995,30 C170.009995,40 170,50 170,50 C170,50 130,50.0099983 90,50.0099983 C50,50.0099983 10,50 10,50 C10,50 9.98999977,40 9.98999977,30 C9.98999977,20 10,10 10,10 Z"></path>
+                </svg>
+                <span>CodePen</span>
+            </a>
+            <a class="button green" href="https://github.com/AlloyTeam/curvejs" target="_blank">
+                <svg viewBox="0 0 180 60">
+                    <path d="M10,10 C10,10 50,9.98999977 90,9.98999977 C130,9.98999977 170,10 170,10 C170,10 170.009995,20 170.009995,30 C170.009995,40 170,50 170,50 C170,50 130,50.0099983 90,50.0099983 C50,50.0099983 10,50 10,50 C10,50 9.98999977,40 9.98999977,30 C9.98999977,20 10,10 10,10 Z"></path>
+                </svg>
+                <span>GitHub</span>
+            </a>
+        </div>
+        <p class="credits">
+            v<span class="version">0.1.0</span> © <span class="date">2017</span> AlloyTeam.com
+        </p>
     </div>
-    <p class="credits">
-        v<span class="version">0.1.0</span> © <span class="date">2017</span> AlloyTeam.com
-    </p>
-</div>
+
 <script src="asset/main.js"></script>
 </body>
 </html>

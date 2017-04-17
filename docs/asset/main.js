@@ -525,7 +525,7 @@ var lineCount = 10;
 var random$1 = util.random;
 var randomColor$1 = util.randomColor;
 var randomSpeed$1 = util.randomSpeed;
-var stage = new Stage(500, 450, '#container');
+var stage = new Stage(500, 250, '#container');
 
 function generatePosition() {
 
