@@ -10,6 +10,13 @@ Made curve a dancer in HTML5 canvas.
 
 ---
 
+## Demos
+
+* [Simple](https://alloyteam.github.io/curvejs/pg/rd.html?type=simple)
+* [Simple-ES5](https://alloyteam.github.io/curvejs/pg/rd.html?type=simple-es5)
+* [Curves](https://alloyteam.github.io/curvejs/pg/rd.html?type=curves)
+* [Word](https://alloyteam.github.io/curvejs/pg/rd.html?type=word)
+
 ## Usage
 
 ```bash
@@ -89,13 +96,6 @@ export default function (points, data) {
     })
 }
 ```
-
-## Demos
-
-* [Simple](https://alloyteam.github.io/curvejs/pg/rd.html?type=simple)
-* [Simple-ES5](https://alloyteam.github.io/curvejs/pg/rd.html?type=simple-es5)
-* [Curves](https://alloyteam.github.io/curvejs/pg/rd.html?type=curves)
-* [Word](https://alloyteam.github.io/curvejs/pg/rd.html?type=word)
 
 ## License
 
