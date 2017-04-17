@@ -31,7 +31,6 @@ Then start to dance:
 ```js
 var   Stage = curvejs.Stage,
       Curve = curvejs.Curve,
-      motion = curvejs.motion,
       canvas = document.getElementById('myCanvas'),
       stage = new Stage(canvas),
       rd = function() {
@@ -45,28 +44,11 @@ var curve = new Curve({
   motion: function motion(points, data) {
       points.forEach(function (item, index) {
           points[index] += data[index]
-
-          if (points[index] < 0) {
-              points[index] = 0
-              data[index] *= -1
-          }
-          if (index % 2 === 0) {
-              if (points[index] > canvas.width) {
-                  points[index] = canvas.width
-                  data[index] *= -1
-              }
-          } else {
-              if (points[index] > canvas.height) {
-                  points[index] = canvas.height
-                  data[index] *= -1
-              }
-          }
       })
   }
 })
 
 stage.add(curve)
-
 
 function tick(){
   stage.update()
@@ -76,15 +58,45 @@ function tick(){
 tick()
 ```
 
+## Using built-in motion
+
+```js
+var curve = new Curve({
+  points: [277, 327, 230, 314, 236, 326, 257, 326],
+  data: {angle: 0, r:5 ,step:Math.PI / 50 }
+  motion: curvejs.motion.dance
+})
+```
+
 ## Submit your motion
+
+In [this motion directory](https://github.com/AlloyTeam/curvejs/tree/master/src/motion), there are already some built-in motion. you can submit your motion and then create a pull request to the project. 
+
+Format and specification of your motion:
+
+```js
+/**
+ * move motion.
+ *
+ * @param {points}
+ * @param {data}
+ *      data rule example:
+ *      [1, 0.2, -3, 0.7, 0.5, 0.3, -1, 1]
+ */
+export default function (points, data) {
+    points.forEach(function (item, index) {
+        points[index] += data[index]
+    })
+}
+```
 
 ## Demos
 
+* [Simple]()
+* [Simple-ES5]()
+* [Curves]()
+* [Word]()
 
 
-
-
-
-====
-
-[MIT License](LICENSE.md). ? 2017 [dntzhnag&AlloyTeam](http://alloyteam.com).
+---
+MIT License
