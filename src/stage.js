@@ -18,19 +18,6 @@ class Stage extends Group {
             this.ctx = this.canvas.getContext('2d')
             document.querySelector(renderTo).appendChild(this.canvas)
         }
-
-
-    }
-
-
-    addExistLine(process) {
-
-
-    }
-
-    sameAs(index) {
-
-
     }
 
     update() {
@@ -40,6 +27,11 @@ class Stage extends Group {
         })
     }
 
+    addExistLine(process) {
+    }
+
+    sameAs(index) {
+    }
 }
 
 

@@ -1,4 +1,3 @@
-
 import vector2 from '../vector2.js'
 
 export default function to(points, target) {

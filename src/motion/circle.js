@@ -1,5 +1,3 @@
-
-
 export default function circle(points, data){
     var R = [[Math.cos(data.angle), -Math.sin(data.angle)], [Math.sin(data.angle), Math.cos(data.angle)]];
 

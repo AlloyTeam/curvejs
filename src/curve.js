@@ -70,9 +70,7 @@ class Curve {
     }
 
     clone() {
-
     }
 }
-
 
 export default Curve

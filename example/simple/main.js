@@ -404,17 +404,10 @@ var Stage$1 = function (_Group) {
             _this.ctx = _this.canvas.getContext('2d');
             document.querySelector(renderTo).appendChild(_this.canvas);
         }
-
         return _this;
     }
 
     createClass(Stage, [{
-        key: 'addExistLine',
-        value: function addExistLine(process) {}
-    }, {
-        key: 'sameAs',
-        value: function sameAs(index) {}
-    }, {
         key: 'update',
         value: function update() {
             var _this2 = this;
@@ -424,13 +417,16 @@ var Stage$1 = function (_Group) {
                 child.draw(_this2.ctx);
             });
         }
+    }, {
+        key: 'addExistLine',
+        value: function addExistLine(process) {}
+    }, {
+        key: 'sameAs',
+        value: function sameAs(index) {}
     }]);
     return Stage;
 }(Group);
 
-/**
- * Created by dntzhang on 2017/4/15.
- */
 var data = {
 
     'c': [[70, 70, 12, 76, 12, 123, 70, 128]],
@@ -441,7 +437,6 @@ var data = {
     'e': [[44, 104, 112, 52, -20, 82, 77, 136]], 's': [[81, 72, 17, 42, 105, 145, 41, 120]],
     'l': [[77, 27, 30, 114, 36, 126, 57, 126]],
     'i': [[56, 71, 56, 72, 59, 70, 56, 73], [47, 93, 59, 81, 47, 121, 59, 111]]
-
 };
 
 var Word = function (_Group) {
