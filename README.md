@@ -92,11 +92,10 @@ export default function (points, data) {
 
 ## Demos
 
-* [Simple]()
-* [Simple-ES5]()
-* [Curves]()
-* [Word]()
-
+* [Simple](https://alloyteam.github.io/curvejs/example/simple/)
+* [Simple-ES5](https://alloyteam.github.io/curvejs/example/simple-es5/)
+* [Curves](https://alloyteam.github.io/curvejs/example/curves/)
+* [Word](https://alloyteam.github.io/curvejs/example/word/)
 
 ---
 MIT License
