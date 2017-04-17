@@ -97,5 +97,8 @@ export default function (points, data) {
 * [Curves](https://alloyteam.github.io/curvejs/example/curves/)
 * [Word](https://alloyteam.github.io/curvejs/example/word/)
 
----
-MIT License
+## License
+
+[MIT](http://opensource.org/licenses/MIT)
+
+Copyright (c) 2017-present, dntzhang & AlloyTeam
