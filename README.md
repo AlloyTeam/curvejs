@@ -16,6 +16,9 @@ Made curve a dancer in HTML5 canvas.
 * [Simple-ES5](https://alloyteam.github.io/curvejs/pg/rd.html?type=simple-es5)
 * [Curves](https://alloyteam.github.io/curvejs/pg/rd.html?type=curves)
 * [Word](https://alloyteam.github.io/curvejs/pg/rd.html?type=word)
+* [Line](https://alloyteam.github.io/curvejs/pg/rd.html?type=line)
+* [Rotate](https://alloyteam.github.io/curvejs/pg/rd.html?type=rotate)
+* [Close](https://alloyteam.github.io/curvejs/pg/rd.html?type=close)
 
 ## Usage
 
