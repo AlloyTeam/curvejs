@@ -1,0 +1,48 @@
+{
+  "name": "curvejs",
+  "version": "0.1.0",
+  "description": "Curve is a dancer.",
+  "main": "dist/curve.js",
+  "scripts": {
+    "dev": "rollup -c",
+    "dist": "rollup -c",
+    "build": "npm run dev&&npm run dist",
+    "simple": "rollup -c",
+    "word": "rollup -c",
+    "curves": "rollup -c",
+    "watch": "rollup -c -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlloyTeam/curvejs.git"
+  },
+  "keywords": [
+    "curvejs",
+    "bezier",
+    "curve",
+    "canvas",
+    "animation",
+    "dance"
+  ],
+  "author": "dntzhang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AlloyTeam/curvejs/issues"
+  },
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "homepage": "https://github.com/AlloyTeam/curvejss",
+  "dependencies": {},
+  "devDependencies": {
+    "babel-plugin-external-helpers": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babelrc-rollup": "^3.0.0",
+    "rollup": "^0.37.0",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-license": "^0.3.0",
+    "rollup-plugin-uglify": "^1.0.1",
+    "rollup-watch": "^2.5.0"
+  }
+}

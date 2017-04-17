@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>curvejs</title>
+</head>
+
+<body>
+<a href="https://github.com/AlloyTeam/curvejs" target="_blank" style="position: absolute;z-index: 1000; right: 0; top: 0;">
+    <img src="//alloyteam.github.io/curvejs/asset/github.png" alt="" />
+</a>
+    <canvas id="myCanvas" width="600" height="400" style="background-color: black;"></canvas>
+    <script src="../../dist/curve.min.js"></script>
+    <script>
+
+        var   Stage = curvejs.Stage,
+                Curve = curvejs.Curve,
+                motion = curvejs.motion,
+                canvas = document.getElementById('myCanvas'),
+                stage = new Stage(canvas),
+                rd = function() {
+                    return -2 + Math.random() * 2
+                }
+
+        var curve = new Curve({
+            color: '#00FF00',
+            points: [277, 327, 230, 314, 236, 326, 257, 326],
+            data: [rd(), rd(), rd(), rd(), rd(), rd(), rd(), rd()],
+            motion: function motion(points, data) {
+                points.forEach(function (item, index) {
+                    points[index] += data[index]
+
+                    if (points[index] < 0) {
+                        points[index] = 0
+                        data[index] *= -1
+                    }
+                    if (index % 2 === 0) {
+                        if (points[index] > canvas.width) {
+                            points[index] = canvas.width
+                            data[index] *= -1
+                        }
+                    } else {
+                        if (points[index] > canvas.height) {
+                            points[index] = canvas.height
+                            data[index] *= -1
+                        }
+                    }
+                })
+            }
+        })
+
+        stage.add(curve)
+
+
+        function tick(){
+            stage.update()
+            requestAnimationFrame(tick)
+        }
+
+        tick()
+
+    </script>
+</body>
+</html>

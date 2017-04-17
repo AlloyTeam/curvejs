@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../../dist/curve.js"></script>
+</head>
+<body style="background-color: black;">
+    <canvas width="600"  height="400" id="myCanvas"></canvas>
+
+    <script>
+        parent.postMessage(JSON.stringify({
+            type: 'ready',
+        }), '*');
+    </script>
+</body>
+</html>
