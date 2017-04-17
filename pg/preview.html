@@ -12,6 +12,16 @@
         parent.postMessage(JSON.stringify({
             type: 'ready',
         }), '*');
+
+
+        function tick(){
+            if(window.stage) {
+                window.stage.update()
+            }
+            requestAnimationFrame(tick)
+        }
+
+        tick()
     </script>
 </body>
 </html>
