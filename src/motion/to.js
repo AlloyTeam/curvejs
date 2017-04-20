@@ -1,3 +1,11 @@
+/**
+ * to motion.
+ *
+ * @param {points}
+ * @param {data}
+ *      data rule example:
+ *      [100,200, 150, 333, 200,11, 1, 1]
+ */
 import vector2 from '../vector2.js'
 
 export default function to(points, target) {

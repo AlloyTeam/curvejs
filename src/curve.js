@@ -15,11 +15,17 @@ class Curve {
 
         this.data = option.data
 
+        this._noop = function (){}
+        this._ease = function (value){ return value }
+        this._targetPoints = null
 
         this.copyPoints = this.points.slice(0)
-        this.motion = option.motion|| motion.dance
+        this.motion = option.motion|| this._noop
 
-        this._initVision(option.visionCount || 80)
+
+        if(option.initVision === void 0 || option.initVision ) {
+            this._initVision(option.visionCount || 80)
+        }
     }
 
     _initVision() {
@@ -40,7 +46,21 @@ class Curve {
             this._preDate = this._now
         }
 
-        this.motion.call(this,this.points, this.data)
+        if(!this.pauseMotion) {
+            this.motion.call(this, this.points, this.data)
+        }
+
+        if(this._targetPoints){
+            this._pointsTo()
+        }
+    }
+
+    pause(){
+        this.pauseMotion = true
+    }
+
+    play(){
+        this.pauseMotion = false
     }
 
     draw(ctx) {
@@ -67,6 +87,48 @@ class Curve {
 
         }
         ctx.restore()
+    }
+
+    pointsTo(points, time, option){
+        let ps = this.points
+
+        this._targetPoints = points
+        this._pto = option
+        this._ptStart = option.start || this._noop
+        this._ptProgress = option.progress || this._noop
+        this._ptEnd = option.end || this._noop
+        this._ptEase = option.ease || this._ease
+        this._ptTime = time
+        this._ptStartTime = Date.now()
+        this._ptCopyPoints = ps.slice(0)
+
+        this._ptDistance = [points[0] -  ps[0],points[1] -  ps[1],points[2] -  ps[2],points[3] -  ps[3],points[4] -  ps[4],points[5] -  ps[5],points[6] -  ps[6],points[7] -  ps[7]]
+
+        this._ptStart.call(this, 0)
+    }
+
+    _pointsTo(){
+
+
+        let ps = this.points
+console.log(11)
+        let dt = Date.now() - this._ptStartTime
+        if(dt < this._ptTime) {
+            let progress = dt / this._ptTime
+            ps.forEach((v,i)=>{
+                ps[i] =this._ptCopyPoints[i] + this._ptDistance[i] * this._ptEase(progress)
+            })
+            this._ptProgress.call(this, progress)
+        }else{
+            ps = this._targetPoints.slice(0)
+            this._ptEnd.call(this, 1)
+            this._targetPoints = null
+        }
+
+    }
+
+    colorTo(){
+
     }
 
     clone() {

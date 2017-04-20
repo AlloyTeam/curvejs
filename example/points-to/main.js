@@ -1,13 +1,7 @@
-/**
- * curvejs v0.2.0 By dntzhang
- * Github: https://github.com/AlloyTeam/curvejs
- * MIT Licensed.
- */
-
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  (global.curvejs = factory());
+  (factory());
 }(this, (function () { 'use strict';
 
 (function () {
@@ -45,7 +39,7 @@
  *      data rule example:
  *      { angle : 0, r : 5 , step : Math.PI / 50 }
  */
-var dance = function (points, data) {
+var dance$1 = function (points, data) {
     var pre = this.copyPoints,
         theta = data.angle,
         r = data.r;
@@ -202,8 +196,8 @@ function circle(points, data) {
     points[7] = points[7] + R[1][0];
 }
 
-var motion = {
-    dance: dance,
+var motion$1 = {
+    dance: dance$1,
     move: move,
     rotate: rotate,
     to: to,
@@ -279,7 +273,7 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
-var Curve = function () {
+var Curve$1 = function () {
     function Curve(option) {
         classCallCheck(this, Curve);
 
@@ -462,7 +456,7 @@ var Group = function () {
     return Group;
 }();
 
-var Stage = function (_Group) {
+var Stage$1 = function (_Group) {
     inherits(Stage, _Group);
 
     function Stage(width, height, renderTo) {
@@ -550,7 +544,7 @@ var Word = function (_Group) {
 
             this.points.forEach(function (item) {
 
-                _this2.add(new Curve({
+                _this2.add(new Curve$1({
                     x: _this2.x,
                     y: _this2.y,
                     points: item,
@@ -564,14 +558,109 @@ var Word = function (_Group) {
     return Word;
 }(Group);
 
-var index = {
-    Curve: Curve,
+var curvejs = {
+    Curve: Curve$1,
     Group: Group,
-    Stage: Stage,
-    motion: motion,
+    Stage: Stage$1,
+    motion: motion$1,
     Word: Word
 };
 
-return index;
+var Stage = curvejs.Stage;
+var Curve = curvejs.Curve;
+var motion = curvejs.motion;
+
+
+var canvas = document.getElementById('myCanvas');
+var stage = new Stage(canvas);
+
+var data = [[70, 70, 12, 76, 12, 123, 70, 128], [25, 68, 23, 140, 80, 140, 74, 100], [73, 62, 72, 90, 75, 110, 93, 134], [21, 62, 21, 62, 21, 128, 21, 128], [21, 128, 17, 96, 17, 68, 65, 60], [12, 58, 41, 132, 61, 132, 96, 58], [44, 104, 112, 52, -20, 82, 77, 136], [52, 48, 53, 48, 54, 49, 52, 48], [8, 175, 24, 204, 60, 197, 56, 74], [81, 72, 17, 42, 105, 145, 41, 120]];
+var position = [0, 0, 60, 0, 60, 0, 145, 0, 145, 0, 210, 10, 280, -5, 350, 0, 350, 0, 400, 0];
+var colors = ['#22CAB3', '#22CAB3', '#22CAB3', '#22CAB3', '#22CAB3', '#22CAB3', '#22CAB3', '#FF7784', '#FF7784', '#FF7784'];
+var rd = function rd() {
+    return -2 + Math.random() * 2;
+};
+
+var rdX = function rdX() {
+    return 10 + Math.floor(Math.random() * (canvas.width - 20 + 1));
+};
+
+var rdY = function rdY() {
+    return 10 + Math.floor(Math.random() * (canvas.height - 20 + 1));
+};
+
+var motionFn = function motion(points, data) {
+    var _this = this;
+
+    points.forEach(function (item, index) {
+        points[index] += data[index];
+
+        if (index % 2 === 0) {
+            if (points[index] + _this.x < 0) {
+                points[index] = -_this.x;
+                data[index] *= -1;
+            }
+
+            if (points[index] + _this.x > canvas.width) {
+                points[index] = canvas.width - _this.x;
+                data[index] *= -1;
+            }
+        } else {
+            if (points[index] + _this.y < 0) {
+                points[index] = -_this.y;
+                data[index] *= -1;
+            }
+
+            if (points[index] + _this.y > canvas.height) {
+                points[index] = canvas.height - _this.y;
+                data[index] *= -1;
+            }
+        }
+    });
+};
+
+var generate = function generate() {
+    for (var i = 0; i < 10; i++) {
+
+        var curve = new Curve({
+            x: position[i * 2] + 30,
+            y: position[i * 2 + 1] + 80,
+            color: colors[i],
+            points: [rdX(), rdY(), rdX(), rdY(), rdX(), rdY(), rdX(), rdY()],
+            motion: motionFn,
+            data: [rd(), rd(), rd(), rd(), rd(), rd(), rd(), rd()]
+        });
+        stage.add(curve);
+    }
+};
+
+function dance() {
+    stage.children.forEach(function (child, index) {
+        child.pause();
+        child.pointsTo(data[index], 2000, {
+            end: function end() {
+                var _this2 = this;
+
+                setTimeout(function () {
+                    _this2.play();
+                }, 3000);
+            }
+        });
+    });
+}
+setTimeout(function () {
+    return dance();
+}, 2000);
+setInterval(function () {
+    return dance();
+}, 10000);
+
+function tick$1() {
+    stage.update();
+    requestAnimationFrame(tick$1);
+}
+
+generate();
+tick$1();
 
 })));
