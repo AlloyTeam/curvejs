@@ -60,20 +60,7 @@ const motionFn = function motion(points, data) {
     })
 }
 
-const generate = function(){
-    for(let i = 0 ;i < 10; i++) {
 
-        let curve = new Curve({
-            x: position[i * 2] + 30,
-            y: position[i * 2 + 1] + 80,
-            color: colors[i],
-            points: [rdX(), rdY(), rdX(), rdY(), rdX(), rdY(), rdX(), rdY()],
-            motion: motionFn,
-            data: [rd(), rd(), rd(), rd(), rd(), rd(), rd(), rd()],
-        })
-        stage.add(curve)
-    }
-}
 
 
 
@@ -91,13 +78,29 @@ function dance(){
 
 
 }
-setTimeout(()=>dance(),2000)
-setInterval(()=>dance(),10000)
+
+
+;(function main(){
+    for(let i = 0 ;i < 10; i++) {
+
+        let curve = new Curve({
+            x: position[i * 2] + 30,
+            y: position[i * 2 + 1] + 80,
+            color: colors[i],
+            points: [rdX(), rdY(), rdX(), rdY(), rdX(), rdY(), rdX(), rdY()],
+            motion: motionFn,
+            data: [rd(), rd(), rd(), rd(), rd(), rd(), rd(), rd()],
+        })
+        stage.add(curve)
+    }
+
+    setTimeout(()=>dance(),2000)
+    setInterval(()=>dance(),10000)
+})()
 
 function tick(){
     stage.update()
     requestAnimationFrame(tick)
 }
 
-generate()
 tick()

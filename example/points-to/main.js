@@ -618,21 +618,6 @@ var motionFn = function motion(points, data) {
     });
 };
 
-var generate = function generate() {
-    for (var i = 0; i < 10; i++) {
-
-        var curve = new Curve({
-            x: position[i * 2] + 30,
-            y: position[i * 2 + 1] + 80,
-            color: colors[i],
-            points: [rdX(), rdY(), rdX(), rdY(), rdX(), rdY(), rdX(), rdY()],
-            motion: motionFn,
-            data: [rd(), rd(), rd(), rd(), rd(), rd(), rd(), rd()]
-        });
-        stage.add(curve);
-    }
-};
-
 function dance() {
     stage.children.forEach(function (child, index) {
         child.pause();
@@ -647,19 +632,34 @@ function dance() {
         });
     });
 }
-setTimeout(function () {
-    return dance();
-}, 2000);
-setInterval(function () {
-    return dance();
-}, 10000);
+
+(function main() {
+    for (var i = 0; i < 10; i++) {
+
+        var curve = new Curve({
+            x: position[i * 2] + 30,
+            y: position[i * 2 + 1] + 80,
+            color: colors[i],
+            points: [rdX(), rdY(), rdX(), rdY(), rdX(), rdY(), rdX(), rdY()],
+            motion: motionFn,
+            data: [rd(), rd(), rd(), rd(), rd(), rd(), rd(), rd()]
+        });
+        stage.add(curve);
+    }
+
+    setTimeout(function () {
+        return dance();
+    }, 2000);
+    setInterval(function () {
+        return dance();
+    }, 10000);
+})();
 
 function tick$1() {
     stage.update();
     requestAnimationFrame(tick$1);
 }
 
-generate();
 tick$1();
 
 })));
