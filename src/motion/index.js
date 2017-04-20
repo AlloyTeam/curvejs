@@ -5,6 +5,7 @@ import path from './path.js'
 import to from './to.js'
 import line from './line.js'
 import circle from './circle.js'
+import expand from './expand.js'
 
 export default {
     dance,
@@ -14,5 +15,6 @@ export default {
     line,
     circle,
     close: path.close,
-    open: path.open
+    open: path.open,
+    expand
 }
