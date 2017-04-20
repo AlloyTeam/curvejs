@@ -40,13 +40,13 @@ Or get it by the cdn and link `curve.min.js` in your HTML:
 Then start to dance:
 
 ```js
-var   Stage = curvejs.Stage,
-      Curve = curvejs.Curve,
-      canvas = document.getElementById('myCanvas'),
-      stage = new Stage(canvas),
-      rd = function() {
-          return -2 + Math.random() * 2
-      }
+var Stage = curvejs.Stage,
+    Curve = curvejs.Curve,
+    canvas = document.getElementById('myCanvas'),
+    stage = new Stage(canvas),
+    rd = function() {
+     return -2 + Math.random() * 2
+    }
 
 var curve = new Curve({
   color: '#00FF00',
