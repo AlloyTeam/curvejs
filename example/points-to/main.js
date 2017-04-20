@@ -395,7 +395,6 @@ var Curve$1 = function () {
             var _this = this;
 
             var ps = this.points;
-            console.log(11);
             var dt = Date.now() - this._ptStartTime;
             if (dt < this._ptTime) {
                 var progress = dt / this._ptTime;

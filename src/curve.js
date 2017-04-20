@@ -109,9 +109,7 @@ class Curve {
 
     _pointsTo(){
 
-
         let ps = this.points
-console.log(11)
         let dt = Date.now() - this._ptStartTime
         if(dt < this._ptTime) {
             let progress = dt / this._ptTime
