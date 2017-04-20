@@ -90,8 +90,8 @@ class Curve {
     }
 
     pointsTo(points, time, option){
+        this.pause()
         let ps = this.points
-
         this._targetPoints = points
         this._pto = option
         this._ptStart = option.start || this._noop
@@ -106,6 +106,15 @@ class Curve {
 
         this._ptStart.call(this, 0)
     }
+
+    translatePoints(xy, time, option) {
+
+        xy = Object.assign({x: 0, y: 0}, xy)
+        let ps = this.points
+        this.pointsTo([ps[0] + xy.x, ps[1] + xy.y, ps[2] + xy.x, ps[3] + xy.y, ps[4] + xy.x, ps[5] + xy.y, ps[6] + xy.x, ps[7] + xy.y], time, option)
+
+    }
+
 
     _pointsTo(){
 

@@ -66,7 +66,6 @@ const motionFn = function motion(points, data) {
 
 function dance(){
     stage.children.forEach((child ,index)=>{
-        child.pause()
         child.pointsTo(data[index],2000,{
             end:function(){
                 setTimeout(()=>{
