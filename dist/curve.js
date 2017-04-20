@@ -202,6 +202,47 @@ function circle(points, data) {
     points[7] = points[7] + R[1][0];
 }
 
+function sliceBezier(p1, cp1, cp2, p2, t) {
+    var x1 = p1.x,
+        y1 = p1.y,
+        x2 = cp1.x,
+        y2 = cp1.y,
+        x3 = cp2.x,
+        y3 = cp2.y,
+        x4 = p2.x,
+        y4 = p2.y;
+
+    var x12 = (x2 - x1) * t + x1;
+    var y12 = (y2 - y1) * t + y1;
+
+    var x23 = (x3 - x2) * t + x2;
+    var y23 = (y3 - y2) * t + y2;
+
+    var x34 = (x4 - x3) * t + x3;
+    var y34 = (y4 - y3) * t + y3;
+
+    var x123 = (x23 - x12) * t + x12;
+    var y123 = (y23 - y12) * t + y12;
+
+    var x234 = (x34 - x23) * t + x23;
+    var y234 = (y34 - y23) * t + y23;
+
+    var x1234 = (x234 - x123) * t + x123;
+    var y1234 = (y234 - y123) * t + y123;
+
+    return [x1, y1, x12, y12, x123, y123, x1234, y1234];
+}
+
+var expand = function (points, data) {
+    data.value -= data.step;
+    if (data.value < 0) data.value = 0;
+    var part1OfBezier = sliceBezier({ x: this.copyPoints[0], y: this.copyPoints[1] }, { x: this.copyPoints[2], y: this.copyPoints[3] }, { x: this.copyPoints[4], y: this.copyPoints[5] }, { x: this.copyPoints[6], y: this.copyPoints[7] }, data.value);
+
+    points.forEach(function (value, index) {
+        points[index] = part1OfBezier[index];
+    });
+};
+
 var motion = {
     dance: dance,
     move: move,
@@ -210,7 +251,8 @@ var motion = {
     line: line,
     circle: circle,
     close: path.close,
-    open: path.open
+    open: path.open,
+    expand: expand
 };
 
 var classCallCheck = function (instance, Constructor) {
@@ -379,8 +421,8 @@ var Curve = function () {
     }, {
         key: 'pointsTo',
         value: function pointsTo(points, time, option) {
+            this.pause();
             var ps = this.points;
-
             this._targetPoints = points;
             this._pto = option;
             this._ptStart = option.start || this._noop;
@@ -394,6 +436,14 @@ var Curve = function () {
             this._ptDistance = [points[0] - ps[0], points[1] - ps[1], points[2] - ps[2], points[3] - ps[3], points[4] - ps[4], points[5] - ps[5], points[6] - ps[6], points[7] - ps[7]];
 
             this._ptStart.call(this, 0);
+        }
+    }, {
+        key: 'translatePoints',
+        value: function translatePoints(xy, time, option) {
+
+            xy = Object.assign({ x: 0, y: 0 }, xy);
+            var ps = this.points;
+            this.pointsTo([ps[0] + xy.x, ps[1] + xy.y, ps[2] + xy.x, ps[3] + xy.y, ps[4] + xy.x, ps[5] + xy.y, ps[6] + xy.x, ps[7] + xy.y], time, option);
         }
     }, {
         key: '_pointsTo',
