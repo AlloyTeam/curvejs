@@ -1,4 +1,4 @@
-<p align="center">
+ï»¿<p align="center">
   <a href ="##"><img alt="curvejs" src="http://images2015.cnblogs.com/blog/105416/201704/105416-20170416212420259-931391833.png"></a>
 </p>
 <p align="center">
@@ -9,7 +9,7 @@ Made curve a dancer in HTML5 canvas.
 </p>
 
 ---
-## [ÖÐÎÄREADME](https://github.com/AlloyTeam/curvejs/blob/master/README-CN.md)
+## [ä¸­æ–‡README](https://github.com/AlloyTeam/curvejs/blob/master/README-CN.md)
 
 ## Demos
 
