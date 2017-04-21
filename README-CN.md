@@ -1,16 +1,16 @@
-ï»¿## è…¾è®¯AlloyTeamæ­£å¼å‘å¸ƒWebé­”å¹»çº¿æ¡ - curvejs
+?## ÌÚÑ¶AlloyTeamÕıÊ½·¢²¼WebÄ§»ÃÏßÌõ - curvejs
 
-[curvejs](https://github.com/AlloyTeam/curvejs) ä¸­æ–‡è¯»["å…‹js"]ï¼Œæ˜¯è…¾è®¯AlloyTeamæ‰“é€ çš„ä¸€æ¬¾é­”å¹»çº¿æ¡æ¡†æ¶ï¼Œè®©çº¿æ¡æˆä¸ºä¸€åä¼˜ç§€çš„èˆè€…ï¼Œè®©çº¿æ¡ä»¬æˆä¸ºä¼˜ç§€çš„èˆå›¢ï¼ŒHTML5 Canvaså°±æ˜¯èˆå°ã€‚
+[curvejs](https://github.com/AlloyTeam/curvejs) ÖĞÎÄ¶Á["¿Ëjs"]£¬ÊÇÌÚÑ¶AlloyTeam´òÔìµÄÒ»¿îÄ§»ÃÏßÌõ¿ò¼Ü£¬ÈÃÏßÌõ³ÉÎªÒ»ÃûÓÅĞãµÄÎèÕß£¬ÈÃÏßÌõÃÇ³ÉÎªÓÅĞãµÄÎèÍÅ£¬HTML5 Canvas¾ÍÊÇÎèÌ¨¡£
 
-å®˜ç½‘ï¼š[https://alloyteam.github.io/curvejs/](https://alloyteam.github.io/curvejs/)
+¹ÙÍø£º[https://alloyteam.github.io/curvejs/](https://alloyteam.github.io/curvejs/)
 
-ä½ è¿˜è®°å¾—windowç»å…¸çš„å±å¹•ä¿æŠ¤ç¨‹åºã€Šå˜å¹»çº¿ã€‹å—ï¼Ÿ
+Äã»¹¼ÇµÃwindow¾­µäµÄÆÁÄ»±£»¤³ÌĞò¡¶±ä»ÃÏß¡·Âğ£¿
 
 ![](http://images2015.cnblogs.com/blog/105416/201704/105416-20170421100349227-820259243.png)
 
-å…¶åŸç†å°±æ˜¯ä½¿ç”¨ Perlin-Noise + Particle System + BÃ©zier curve + Color Transition åˆ¶ä½œè€Œæˆã€‚
+ÆäÔ­Àí¾ÍÊÇÊ¹ÓÃ Perlin-Noise + Particle System + B¨¦zier curve + Color Transition ÖÆ×÷¶ø³É¡£
 
-ä½¿ç”¨curvejså®ç°ç±»ä¼¼å˜å¹»çº¿åŠŸèƒ½åªéœ€è¦ä¸åˆ°10è¡Œä»£ç ï¼š
+Ê¹ÓÃcurvejsÊµÏÖÀàËÆ±ä»ÃÏß¹¦ÄÜÖ»ĞèÒª²»µ½10ĞĞ´úÂë£º
 
 ```js
 const  { Stage, Curve, motion } = curvejs
@@ -24,9 +24,9 @@ stage.add(new Curve({
 }))
 ```
 
-[ã€ä½“éªŒåœ°å€ã€‘](https://alloyteam.github.io/curvejs/pg/rd.html?type=noise)
+[¡¾ÌåÑéµØÖ·¡¿](https://alloyteam.github.io/curvejs/pg/rd.html?type=noise)
 
-å½“ç„¶ï¼Œcurvejsçš„èƒ½åŠ›ä¸ä»…ä»…æ˜¯å˜æ¢çº¿ï¼Œè¿™å®Œå…¨å–å†³äºä½ çš„æƒ³è±¡åŠ›ã€‚æ¯”å¦‚ï¼š
+µ±È»£¬curvejsµÄÄÜÁ¦²»½ö½öÊÇ±ä»»Ïß£¬ÕâÍêÈ«È¡¾öÓÚÄãµÄÏëÏóÁ¦¡£±ÈÈç£º
 
 * [Points-To](https://alloyteam.github.io/curvejs/pg/rd.html?type=points-to)
 * [Rotate](https://alloyteam.github.io/curvejs/pg/rd.html?type=rotate)
@@ -38,7 +38,7 @@ stage.add(new Curve({
 * [Line](https://alloyteam.github.io/curvejs/pg/rd.html?type=line)
 * [Close](https://alloyteam.github.io/curvejs/pg/rd.html?type=close)
 
-## ä½¿ç”¨æŒ‡å—
+## Ê¹ÓÃÖ¸ÄÏ
 
 ```bash
 $ npm install curvejs
@@ -48,13 +48,13 @@ $ npm install curvejs
 import curvejs from 'curvejs'
 ```
 
-ä¹Ÿå¯ä»¥ç›´æ¥æ’å…¥scriptåˆ°ä½ çš„HTMLé¡µé¢:
+Ò²¿ÉÒÔÖ±½Ó²åÈëscriptµ½ÄãµÄHTMLÒ³Ãæ:
 
 ```html
 <script src="https://unpkg.com/curvejs@0.2.0/dist/curve.min.js"></script>
 ```
 
-å¼€å§‹è·³èˆ:
+¿ªÊ¼ÌøÎè:
 
 ```js
 var Stage = curvejs.Stage,
@@ -86,10 +86,10 @@ function tick(){
 tick()
 ```
 
-ä¸Šé¢çš„pointsä»£è¡¨äº†ä¸‰æ¬¡è´å¡å°”æ›²çº¿çš„4ä¸ªç‚¹ã€‚motionä»£è¡¨è¿åŠ¨æ–¹å¼ï¼Œmotionå¯ä»¥æ‹¿å»åˆ°pointså’Œdataã€‚motioné‡Œå‡½æ•°çš„thisæŒ‡å‘Curveæ˜¯å®ä¾‹curveã€‚
+ÉÏÃæµÄpoints´ú±íÁËÈı´Î±´Èû¶ûÇúÏßµÄ4¸öµã¡£motion´ú±íÔË¶¯·½Ê½£¬motion¿ÉÒÔÄÃÈ¥µ½pointsºÍdata¡£motionÀïº¯ÊıµÄthisÖ¸ÏòCurveÊÇÊµÀıcurve¡£
 
 
-## ä½¿ç”¨å†…ç½®motion
+## Ê¹ÓÃÄÚÖÃmotion
 
 ```js
 var curve = new Curve({
@@ -99,11 +99,21 @@ var curve = new Curve({
 })
 ```
 
-## æäº¤ä½ çš„motion
+## »ù±¾Ô­Àí
+![](http://images2015.cnblogs.com/blog/105416/201704/105416-20170421100408884-843332110.png)
 
-åœ¨ [ motion ç›®å½•](https://github.com/AlloyTeam/curvejs/tree/master/src/motion), æœ‰è®¸å¤šå†…ç½®çš„motionæä¾›ç»™å¼€å‘è€…ä½¿ç”¨ï¼Œä½†æ˜¯ä½ ä¹Ÿå¯ä»¥æäº¤ä½ çš„motionåˆ°è¿™ä¸ªé¡¹ç›®ï¼Œæˆ‘ä¼šç¬¬ä¸€æ—¶é—´reviewå¹¶åˆå…¥ä¸»å¹²ã€‚
 
-åŸºæœ¬motionæ ¼å¼è§„åˆ™:
+* Ã¿´Î´´½¨Curve ¿ÉÒÔ´«Èë°Ë¸öÊı×Ö£¬ÆäÊµ¾Í´ú±íÉÏÃæµÄ4¸öµãµÄ×ø±ê
+* motionÀï¿ÉÒÔÄÃµ½ points ½øĞĞ×Ô¶¨Òå±ä»Ã
+* »ÃÓ°²»ĞèÒª¿ª·¢Õß¿¼ÂÇ£¬curvejs»á×Ô¶¯Éú³É»ÃÓ°
+
+ÕâÀïĞèÒªÌØ±ğÇ¿µ÷£¬curvejsµÄ»ÃÓ°²»ÊÇÀûÓÃcanvasµÄºÚÉ«µ×£¬È»ºófillRectÌî³ä°ëÍ¸¶ø²úÉú£¬¶øÊÇParticle System¡£ËùÒÔcurvejsÖÆ×÷³öµÄĞ§¹û²»ÓÃÒ»¶¨ÊÇºÚÉ«±³¾°£¬¶øÇÒcanvasÒ²¿ÉÒÔÊÇÍ¸Ã÷£¬Õâ¾Í´ó´óÔö¼ÓÁËÊÊÓÃ³¡¾°¡£
+
+## Ìá½»ÄãµÄmotion
+
+ÔÚ [ motion Ä¿Â¼](https://github.com/AlloyTeam/curvejs/tree/master/src/motion), ÓĞĞí¶àÄÚÖÃµÄmotionÌá¹©¸ø¿ª·¢ÕßÊ¹ÓÃ£¬µ«ÊÇÄãÒ²¿ÉÒÔÌá½»ÄãµÄmotionµ½Õâ¸öÏîÄ¿£¬ÎÒ»áµÚÒ»Ê±¼äreview²¢ºÏÈëÖ÷¸É¡£
+
+»ù±¾motion¸ñÊ½¹æÔò:
 
 ```js
 /**
@@ -115,22 +125,12 @@ var curve = new Curve({
  *      [1, 0.2, -3, 0.7, 0.5, 0.3, -1, 1]
  */
 export default function (points, data) {
-    //ä½ çš„motioné€»è¾‘
+    //ÄãµÄmotionÂß¼­
 }
 ```
 
-## åŸºæœ¬åŸç†
-![](http://images2015.cnblogs.com/blog/105416/201704/105416-20170421100408884-843332110.png)
+## curvejsÏà¹Ø
 
-
-* æ¯æ¬¡åˆ›å»ºCurve å¯ä»¥ä¼ å…¥å…«ä¸ªæ•°å­—ï¼Œå…¶å®å°±ä»£è¡¨ä¸Šé¢çš„4ä¸ªç‚¹çš„åæ ‡
-* motioné‡Œå¯ä»¥æ‹¿åˆ° points è¿›è¡Œè‡ªå®šä¹‰å˜å¹»
-* å¹»å½±ä¸éœ€è¦å¼€å‘è€…è€ƒè™‘ï¼Œcurvejsä¼šè‡ªåŠ¨ç”Ÿæˆå¹»å½±
-
-è¿™é‡Œéœ€è¦ç‰¹åˆ«å¼ºè°ƒï¼Œcurvejsçš„å¹»å½±ä¸æ˜¯åˆ©ç”¨canvasçš„é»‘è‰²åº•ï¼Œç„¶åfillRectå¡«å……åŠé€è€Œäº§ç”Ÿï¼Œè€Œæ˜¯Particle Systemã€‚æ‰€ä»¥curvejsåˆ¶ä½œå‡ºçš„æ•ˆæœä¸ç”¨ä¸€å®šæ˜¯é»‘è‰²èƒŒæ™¯ï¼Œè€Œä¸”canvasä¹Ÿå¯ä»¥æ˜¯é€æ˜ï¼Œè¿™å°±å¤§å¤§å¢åŠ äº†é€‚ç”¨åœºæ™¯ã€‚
-
-## Omiç›¸å…³
-
-* å®˜ç½‘ï¼š[https://alloyteam.github.io/curvejs/](https://alloyteam.github.io/curvejs/)
+* ¹ÙÍø£º[https://alloyteam.github.io/curvejs/](https://alloyteam.github.io/curvejs/)
 * Github: [https://github.com/AlloyTeam/curvejs](https://github.com/AlloyTeam/curvejs)
-* æ›´åŠ æ–¹ä¾¿çš„äº¤æµå…³äºcurvejsçš„ä¸€åˆ‡å¯ä»¥åŠ å…¥QQçš„curvejsäº¤æµç¾¤(179181560)
+* ¸ü¼Ó·½±ãµÄ½»Á÷¹ØÓÚcurvejsµÄÒ»ÇĞ¿ÉÒÔ¼ÓÈëQQµÄcurvejs½»Á÷Èº(179181560)
