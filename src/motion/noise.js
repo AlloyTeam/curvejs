@@ -1,5 +1,5 @@
 /**
- * move motion.
+ * noise motion.
  *
  * @param {points}
  * @param {data}
