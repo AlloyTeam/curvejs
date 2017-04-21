@@ -1,5 +1,5 @@
 /**
- * curvejs v0.3.0 By dntzhang
+ * curvejs v0.2.0 By dntzhang
  * Github: https://github.com/AlloyTeam/curvejs
  * MIT Licensed.
  */
