@@ -101,6 +101,10 @@ export default function (points, data) {
 }
 ```
 
+## QQ Group
+
+The group id is 179181560. Welcome to join the group.
+
 ## License
 
 [MIT](http://opensource.org/licenses/MIT)
