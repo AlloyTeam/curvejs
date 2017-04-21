@@ -9,6 +9,7 @@ Made curve a dancer in HTML5 canvas.
 </p>
 
 ---
+## [ÖÐÎÄREADME](https://github.com/AlloyTeam/curvejs/blob/master/README-CN.md)
 
 ## Demos
 
