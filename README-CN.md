@@ -1,4 +1,4 @@
-## 腾讯AlloyTeam正式发布Web魔幻线条 - curvejs
+﻿## 腾讯AlloyTeam正式发布Web魔幻线条 - curvejs
 
 [curvejs](https://github.com/AlloyTeam/curvejs) 中文读["克js"]，是腾讯AlloyTeam打造的一款魔幻线条框架，让线条成为一名优秀的舞者，让线条们成为优秀的舞团，HTML5 Canvas就是舞台。
 
