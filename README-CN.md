@@ -8,7 +8,7 @@
 
 ![](http://images2015.cnblogs.com/blog/105416/201704/105416-20170421100349227-820259243.png)
 
-其原理就是使用 Perlin-Noise + Particle System + Bézier curve + Color Transition 制作而成。
+其原理就是使用 Perlin-Noise + Particle System + Bézier Curve + Color Transition 制作而成。
 
 使用curvejs实现类似变幻线功能只需要不到10行代码：
 
