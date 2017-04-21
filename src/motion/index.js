@@ -6,6 +6,7 @@ import to from './to.js'
 import line from './line.js'
 import circle from './circle.js'
 import expand from './expand.js'
+import noise from './noise.js'
 
 export default {
     dance,
@@ -16,5 +17,6 @@ export default {
     circle,
     close: path.close,
     open: path.open,
-    expand
+    expand,
+    noise
 }

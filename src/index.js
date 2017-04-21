@@ -3,6 +3,7 @@ import Curve from './curve.js'
 import Group from './group.js'
 import Stage from './stage.js'
 import motion from './motion/index.js'
+import perlin from './noise.js'
 import Word from './word.js'
 
 
@@ -11,5 +12,6 @@ export default {
     Group,
     Stage,
     motion,
-    Word
+    Word,
+    perlin
 }
