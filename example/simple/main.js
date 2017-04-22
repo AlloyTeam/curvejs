@@ -661,12 +661,12 @@ var Curve$1 = function () {
     function Curve(option) {
         classCallCheck(this, Curve);
 
-        this.points = option.points || [];
+        this.points = option.points || [0, 0, 0, 0, 0, 0, 0, 0];
         this.color = option.color || 'black';
         this.x = option.x || 0;
         this.y = option.y || 0;
         this.vision = option.vision || [];
-        this.visionMax = 640;
+        this.visionMax = 720;
         this.visionInterval = option.visionInterval || 10;
 
         this._preDate = Date.now();
@@ -683,6 +683,8 @@ var Curve$1 = function () {
         this.copyPoints = this.points.slice(0);
         this.motion = option.motion || this._noop;
 
+        this.visionAlpha = option.visionAlpha === void 0 ? 0.2 : option.visionAlpha;
+        console.log(this.visionAlpha);
         if (option.initVision === void 0 || option.initVision) {
             this._initVision(option.visionCount || 80);
         }
@@ -703,8 +705,12 @@ var Curve$1 = function () {
             if (this._now - this._preDate > this.visionInterval || tickSelf) {
 
                 this.vision.push.apply(this.vision, this.points);
+                this.vision.push(this.color);
+                if (tickSelf) {
+                    console.log(JSON.stringify(this.vision));
+                }
                 if (this.vision.length > this.visionMax) {
-                    this.vision.splice(0, 8);
+                    this.vision.splice(0, 9);
                 }
                 this._preDate = this._now;
             }
@@ -734,9 +740,9 @@ var Curve$1 = function () {
             ctx.save();
             ctx.translate(this.x, this.y);
             ctx.globalAlpha = 1;
+            ctx.strokeStyle = this.color;
             var points = this.points;
             ctx.beginPath();
-            ctx.strokeStyle = this.color;
             ctx.moveTo.call(ctx, points[0], points[1]);
             ctx.bezierCurveTo.call(ctx, points[2], points[3], points[4], points[5], points[6], points[7]);
             ctx.stroke();
@@ -745,8 +751,9 @@ var Curve$1 = function () {
 
             var i = 0,
                 len = vision.length;
-            for (; i < len; i += 8) {
-                ctx.globalAlpha = i / this.visionMax * 0.1;
+            for (; i < len; i += 9) {
+                ctx.globalAlpha = i / this.visionMax * this.visionAlpha;
+                ctx.strokeStyle = vision[i + 8];
                 ctx.beginPath();
                 ctx.moveTo.call(ctx, vision[i], vision[i + 1]);
                 ctx.bezierCurveTo.call(ctx, vision[i + 2], vision[i + 3], vision[i + 4], vision[i + 5], vision[i + 6], vision[i + 7]);
@@ -1218,7 +1225,7 @@ var curve = new Curve({
         });
     }
 });
-
+window.xxx = curve;
 stage.add(curve);
 
 function tick$1() {

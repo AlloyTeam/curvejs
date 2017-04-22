@@ -35,7 +35,7 @@ let curve = new Curve({
         })
     }
 })
-
+window.xxx= curve
 stage.add(curve)
 
 
