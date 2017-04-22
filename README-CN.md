@@ -34,6 +34,7 @@ stage.add(new Curve({
 * [Perlin-Noise](https://alloyteam.github.io/curvejs/pg/rd.html?type=noise)
 * [Simple](https://alloyteam.github.io/curvejs/pg/rd.html?type=simple)
 * [Simple-ES5](https://alloyteam.github.io/curvejs/pg/rd.html?type=simple-es5)
+* [Lerp Color](https://alloyteam.github.io/curvejs/pg/rd.html?type=color)
 * [Curves](https://alloyteam.github.io/curvejs/pg/rd.html?type=curves)
 * [Line](https://alloyteam.github.io/curvejs/pg/rd.html?type=line)
 * [Close](https://alloyteam.github.io/curvejs/pg/rd.html?type=close)
