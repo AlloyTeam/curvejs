@@ -661,11 +661,11 @@ var Curve$1 = function () {
     function Curve(option) {
         classCallCheck(this, Curve);
 
-        this.points = option.points || [];
+        this.points = option.points || [0, 0, 0, 0, 0, 0, 0, 0];
         this.color = option.color || 'black';
         this.x = option.x || 0;
         this.y = option.y || 0;
-        this.vision = option.vision || [0, 0, 0, 0, 0, 0, 0, 0];
+        this.vision = option.vision || [];
         this.visionMax = 720;
         this.visionInterval = option.visionInterval || 10;
 
@@ -706,6 +706,9 @@ var Curve$1 = function () {
 
                 this.vision.push.apply(this.vision, this.points);
                 this.vision.push(this.color);
+                if (tickSelf) {
+                    console.log(JSON.stringify(this.vision));
+                }
                 if (this.vision.length > this.visionMax) {
                     this.vision.splice(0, 9);
                 }
@@ -1209,8 +1212,6 @@ setInterval(function () {
 
     if (percent === 0 || percent === 100) step *= -1;
 }, 30);
-
-window.xx = curve;
 
 function tick$1() {
     stage.update();

@@ -684,7 +684,7 @@ var Curve$1 = function () {
         this.motion = option.motion || this._noop;
 
         this.visionAlpha = option.visionAlpha === void 0 ? 0.2 : option.visionAlpha;
-        console.log(this.visionAlpha);
+
         if (option.initVision === void 0 || option.initVision) {
             this._initVision(option.visionCount || 80);
         }
