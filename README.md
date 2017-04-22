@@ -37,7 +37,7 @@ import curvejs from 'curvejs'
 Or get it by the cdn and link `curve.min.js` in your HTML:
 
 ```html
-<script src="https://unpkg.com/curvejs@0.2.0/dist/curve.min.js"></script>
+<script src="https://unpkg.com/curvejs@0.3.1/dist/curve.min.js"></script>
 ```
 
 Then start to dance:

@@ -1,6 +1,6 @@
 {
   "name": "curvejs",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Curve is a dancer.",
   "main": "dist/curve.js",
   "scripts": {
@@ -9,6 +9,7 @@
     "build": "npm run dev&&npm run dist",
     "simple": "rollup -c",
     "word": "rollup -c",
+    "noise": "rollup -c",
     "points-to":"rollup -c",
     "curves": "rollup -c",
     "watch": "rollup -c -w"
