@@ -5,6 +5,7 @@ import Stage from './stage.js'
 import motion from './motion/index.js'
 import perlin from './noise.js'
 import Word from './word.js'
+import color from './color.js'
 
 
 export default {
@@ -13,5 +14,6 @@ export default {
     Stage,
     motion,
     Word,
-    perlin
+    perlin,
+    color
 }
