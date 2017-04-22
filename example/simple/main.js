@@ -1164,7 +1164,7 @@ function makeGradientColor(color1, color2, percent) {
     return newColor.cssColor;
 }
 
-var color$1 = {
+var color = {
     lerp: lerp,
     hexToRgb: hexToRgb,
     makeGradientColor: makeGradientColor
@@ -1177,13 +1177,12 @@ var curvejs = {
     motion: motion$1,
     Word: Word,
     perlin: p5,
-    color: color$1
+    color: color
 };
 
 var Stage = curvejs.Stage;
 var Curve = curvejs.Curve;
 var motion = curvejs.motion;
-var color = curvejs.color;
 
 
 var canvas = document.getElementById('myCanvas');
@@ -1222,15 +1221,8 @@ var curve = new Curve({
 
 stage.add(curve);
 
-var percent = 0;
-var step = 1;
-
 function tick$1() {
-    curve.color = color.lerp('red', 'blue', percent);
-    percent += step;
     stage.update();
-    if (percent === 100) step *= -1;
-    console.log(percent);
     requestAnimationFrame(tick$1);
 }
 
