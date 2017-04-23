@@ -77,7 +77,7 @@ tick()
 ```js
 var curve = new Curve({
   points: [277, 327, 230, 314, 236, 326, 257, 326],
-  data: {angle: 0, r:5 ,step:Math.PI / 50 }
+  data: {angle: 0, r:5 ,step:Math.PI / 50 },
   motion: curvejs.motion.dance
 })
 ```
