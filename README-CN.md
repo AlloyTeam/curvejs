@@ -65,7 +65,7 @@ var Stage = curvejs.Stage,
     canvas = document.getElementById('myCanvas'),
     stage = new Stage(canvas),
     rd = function() {
-     return -2 + Math.random() * 2
+        return -2 + Math.random() * 2
     }
 
 var curve = new Curve({
