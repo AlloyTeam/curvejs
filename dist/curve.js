@@ -1,5 +1,5 @@
 /**
- * curvejs v0.3.1 By dntzhang
+ * curvejs v0.3.2 By dntzhang
  * Github: https://github.com/AlloyTeam/curvejs
  * MIT Licensed.
  */
@@ -712,6 +712,7 @@ var Curve = function () {
 
                 this.vision.push.apply(this.vision, this.points);
                 this.vision.push(this.color);
+
                 if (this.vision.length > this.visionMax) {
                     this.vision.splice(0, 9);
                 }
@@ -792,6 +793,26 @@ var Curve = function () {
             this.pointsTo([ps[0] + xy.x, ps[1] + xy.y, ps[2] + xy.x, ps[3] + xy.y, ps[4] + xy.x, ps[5] + xy.y, ps[6] + xy.x, ps[7] + xy.y], time, option);
         }
     }, {
+        key: 'scaleTo',
+        value: function scaleTo(scale, time, option) {
+            var scaleX = 1,
+                scaleY = 1;
+            if (typeof scale === 'number') {
+                scaleX = scaleY = scale;
+            } else {
+                scale.scaleX !== void 0 && (scaleX = scale.scaleX)(scale.scaleY !== void 0) && (scaleY = scale.scaleX);
+            }
+
+            var points = this.points;
+            var centerX = option.center !== void 0 ? option.center[0] : (points[0] + points[6]) / 2;
+            var centerY = option.center !== void 0 ? option.center[1] : (points[1] + points[7]) / 2;
+
+            this.pointsTo([scaleX * (points[0] - centerX) + centerX, scaleY * (points[1] - centerY) + centerY, scaleX * (points[2] - centerX) + centerX, scaleY * (points[3] - centerY) + centerY, scaleX * (points[4] - centerX) + centerX, scaleY * (points[5] - centerY) + centerY, scaleX * (points[6] - centerX) + centerX, scaleY * (points[7] - centerY) + centerY], time, option);
+        }
+    }, {
+        key: 'rotateTo',
+        value: function rotateTo(rotation, time, option) {}
+    }, {
         key: '_pointsTo',
         value: function _pointsTo() {
             var _this = this;
@@ -806,8 +827,8 @@ var Curve = function () {
                 this._ptProgress.call(this, progress);
             } else {
                 ps = this._targetPoints.slice(0);
-                this._ptEnd.call(this, 1);
                 this._targetPoints = null;
+                this._ptEnd.call(this, 1);
             }
         }
     }, {
