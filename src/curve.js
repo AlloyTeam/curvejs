@@ -42,9 +42,7 @@ class Curve {
 
             this.vision.push.apply(this.vision, this.points)
             this.vision.push(this.color)
-            if(tickSelf){
-                console.log(JSON.stringify(this.vision))
-            }
+
             if (this.vision.length > this.visionMax) {
                 this.vision.splice(0, 9)
             }
@@ -121,6 +119,38 @@ class Curve {
 
     }
 
+    scaleTo(scale, time, option) {
+        let scaleX = 1,
+            scaleY = 1
+        if (typeof scale === 'number') {
+            scaleX = scaleY = scale
+        } else {
+            (scale.scaleX !== void 0) && (scaleX = scale.scaleX)
+            (scale.scaleY !== void 0) && (scaleY = scale.scaleX)
+        }
+
+        let points = this.points
+        let centerX = (option.center !== void 0) ? option.center[0] : (points[0] + points[6]) / 2
+        let centerY = (option.center !== void 0) ? option.center[1]  : (points[1] + points[7]) / 2
+
+
+        this.pointsTo(
+            [scaleX * (points[0] - centerX) + centerX,
+                scaleY * (points[1] - centerY) + centerY,
+                scaleX * (points[2] - centerX) + centerX,
+                scaleY * (points[3] - centerY) + centerY,
+                scaleX * (points[4] - centerX) + centerX,
+                scaleY * (points[5] - centerY) + centerY,
+                scaleX * (points[6] - centerX) + centerX,
+                scaleY * (points[7] - centerY) + centerY], time, option)
+
+    }
+
+    rotateTo(rotation, time, option) {
+
+
+    }
+
 
     _pointsTo(){
 
@@ -134,10 +164,9 @@ class Curve {
             this._ptProgress.call(this, progress)
         }else{
             ps = this._targetPoints.slice(0)
-            this._ptEnd.call(this, 1)
             this._targetPoints = null
+            this._ptEnd.call(this, 1)
         }
-
     }
 
     colorTo(){

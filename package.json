@@ -1,6 +1,6 @@
 {
   "name": "curvejs",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Curve is a dancer.",
   "main": "dist/curve.js",
   "scripts": {
