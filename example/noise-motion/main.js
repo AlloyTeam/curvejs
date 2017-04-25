@@ -274,7 +274,7 @@ var scaled_cosine = function scaled_cosine(i) {
     return 0.5 * (1.0 - Math.cos(i * Math.PI));
 };
 
-var perlin$1; // will be initialized lazily by noise() or noiseSeed()
+var perlin; // will be initialized lazily by noise() or noiseSeed()
 
 
 /**
@@ -347,10 +347,10 @@ p5.noise = function (x, y, z) {
     y = y || 0;
     z = z || 0;
 
-    if (perlin$1 == null) {
-        perlin$1 = new Array(PERLIN_SIZE + 1);
+    if (perlin == null) {
+        perlin = new Array(PERLIN_SIZE + 1);
         for (var i = 0; i < PERLIN_SIZE + 1; i++) {
-            perlin$1[i] = Math.random();
+            perlin[i] = Math.random();
         }
     }
 
@@ -383,17 +383,17 @@ p5.noise = function (x, y, z) {
         rxf = scaled_cosine(xf);
         ryf = scaled_cosine(yf);
 
-        n1 = perlin$1[of & PERLIN_SIZE];
-        n1 += rxf * (perlin$1[of + 1 & PERLIN_SIZE] - n1);
-        n2 = perlin$1[of + PERLIN_YWRAP & PERLIN_SIZE];
-        n2 += rxf * (perlin$1[of + PERLIN_YWRAP + 1 & PERLIN_SIZE] - n2);
+        n1 = perlin[of & PERLIN_SIZE];
+        n1 += rxf * (perlin[of + 1 & PERLIN_SIZE] - n1);
+        n2 = perlin[of + PERLIN_YWRAP & PERLIN_SIZE];
+        n2 += rxf * (perlin[of + PERLIN_YWRAP + 1 & PERLIN_SIZE] - n2);
         n1 += ryf * (n2 - n1);
 
         of += PERLIN_ZWRAP;
-        n2 = perlin$1[of & PERLIN_SIZE];
-        n2 += rxf * (perlin$1[of + 1 & PERLIN_SIZE] - n2);
-        n3 = perlin$1[of + PERLIN_YWRAP & PERLIN_SIZE];
-        n3 += rxf * (perlin$1[of + PERLIN_YWRAP + 1 & PERLIN_SIZE] - n3);
+        n2 = perlin[of & PERLIN_SIZE];
+        n2 += rxf * (perlin[of + 1 & PERLIN_SIZE] - n2);
+        n3 = perlin[of + PERLIN_YWRAP & PERLIN_SIZE];
+        n3 += rxf * (perlin[of + PERLIN_YWRAP + 1 & PERLIN_SIZE] - n3);
         n2 += ryf * (n3 - n2);
 
         n1 += scaled_cosine(zf) * (n2 - n1);
@@ -551,9 +551,9 @@ p5.noiseSeed = function (seed) {
     }();
 
     lcg.setSeed(seed);
-    perlin$1 = new Array(PERLIN_SIZE + 1);
+    perlin = new Array(PERLIN_SIZE + 1);
     for (var i = 0; i < PERLIN_SIZE + 1; i++) {
-        perlin$1[i] = lcg.rand();
+        perlin[i] = lcg.rand();
     }
 };
 
@@ -706,7 +706,9 @@ var Curve$1 = function () {
 
                 this.vision.push.apply(this.vision, this.points);
                 this.vision.push(this.color);
-
+                if (tickSelf) {
+                    console.log(JSON.stringify(this.vision));
+                }
                 if (this.vision.length > this.visionMax) {
                     this.vision.splice(0, 9);
                 }
@@ -787,26 +789,6 @@ var Curve$1 = function () {
             this.pointsTo([ps[0] + xy.x, ps[1] + xy.y, ps[2] + xy.x, ps[3] + xy.y, ps[4] + xy.x, ps[5] + xy.y, ps[6] + xy.x, ps[7] + xy.y], time, option);
         }
     }, {
-        key: 'scaleTo',
-        value: function scaleTo(scale, time, option) {
-            var scaleX = 1,
-                scaleY = 1;
-            if (typeof scale === 'number') {
-                scaleX = scaleY = scale;
-            } else {
-                scale.scaleX !== void 0 && (scaleX = scale.scaleX)(scale.scaleY !== void 0) && (scaleY = scale.scaleX);
-            }
-
-            var points = this.points;
-            var centerX = option.center !== void 0 ? option.center[0] : (points[0] + points[6]) / 2;
-            var centerY = option.center !== void 0 ? option.center[1] : (points[1] + points[7]) / 2;
-
-            this.pointsTo([scaleX * (points[0] - centerX) + centerX, scaleY * (points[1] - centerY) + centerY, scaleX * (points[2] - centerX) + centerX, scaleY * (points[3] - centerY) + centerY, scaleX * (points[4] - centerX) + centerX, scaleY * (points[5] - centerY) + centerY, scaleX * (points[6] - centerX) + centerX, scaleY * (points[7] - centerY) + centerY], time, option);
-        }
-    }, {
-        key: 'rotateTo',
-        value: function rotateTo(rotation, time, option) {}
-    }, {
         key: '_pointsTo',
         value: function _pointsTo() {
             var _this = this;
@@ -821,8 +803,8 @@ var Curve$1 = function () {
                 this._ptProgress.call(this, progress);
             } else {
                 ps = this._targetPoints.slice(0);
-                this._targetPoints = null;
                 this._ptEnd.call(this, 1);
+                this._targetPoints = null;
             }
         }
     }, {
@@ -1189,7 +1171,7 @@ function makeGradientColor(color1, color2, percent) {
     return newColor.cssColor;
 }
 
-var color = {
+var color$1 = {
     lerp: lerp,
     hexToRgb: hexToRgb,
     makeGradientColor: makeGradientColor
@@ -1202,33 +1184,34 @@ var curvejs = {
     motion: motion$1,
     Word: Word,
     perlin: p5,
-    color: color
+    color: color$1
 };
 
 var Stage = curvejs.Stage;
 var Curve = curvejs.Curve;
 var motion = curvejs.motion;
-var perlin = curvejs.perlin;
+var color = curvejs.color;
 
 
-var canvas = document.getElementById('myCanvas');
-var stage = new Stage(canvas);
+var stage = new Stage(document.getElementById('myCanvas'));
 
 var curve = new Curve({
     color: '#00FF00',
-    points: [277, 327, 230, 314, 236, 326, 257, 326],
-    data: { value: 0, step: 0.01, interval: 10 },
-    motion: function motion(points, data) {
-        points.forEach(function (item, index) {
-            var n = perlin.noise(data.value + index * 10);
-            var d = -5 + n * 10;
-            points[index] += d;
-            data.value += data.step;
-        });
-    }
+    data: { value: 0, step: 0.01, width: 600, height: 400 },
+    motion: motion.noise
 });
 
 stage.add(curve);
+
+var percent = 0;
+var step = 1;
+
+setInterval(function () {
+
+    curve.color = color.lerp('red', 'green', percent += step);
+
+    if (percent === 0 || percent === 100) step *= -1;
+}, 30);
 
 function tick$1() {
     stage.update();
