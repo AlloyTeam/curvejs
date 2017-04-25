@@ -12,7 +12,7 @@
 
 其原理就是使用 Perlin-Noise + Particle System + Bézier Curve + Color Transition 制作而成。
 
-使用curvejs实现类似变幻线功能只需要不到10行代码：
+使用curvejs实现类似变幻线功能只需要几行代码：
 
 ```js
 const  { Stage, Curve, motion } = curvejs
@@ -24,6 +24,13 @@ stage.add(new Curve({
     data: {value: 0, step: 0.008, width: 600, height: 400},
     motion: motion.noise
 }))
+
+function tick(){
+    stage.update()
+    requestAnimationFrame(tick)
+}
+
+tick()
 ```
 
 [【体验地址】](https://alloyteam.github.io/curvejs/pg/rd.html?type=noise)
