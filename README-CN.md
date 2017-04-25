@@ -24,6 +24,13 @@ stage.add(new Curve({
     data: {value: 0, step: 0.008, width: 600, height: 400},
     motion: motion.noise
 }))
+
+function tick(){
+    stage.update()
+    requestAnimationFrame(tick)
+}
+
+tick()
 ```
 
 [【体验地址】](https://alloyteam.github.io/curvejs/pg/rd.html?type=noise)
