@@ -1213,7 +1213,7 @@ var canvas = document.getElementById('myCanvas');
 var stage = new Stage(canvas);
 
 var data = [[75, 40, 75, 37, 70, 25, 50, 25], [50, 25, 20, 25, 20, 62.5, 20, 62.5], [20, 62.5, 20, 80, 40, 102, 75, 120], [75, 120, 110, 102, 130, 80, 130, 62.5], [130, 62.5, 130, 62.5, 130, 25, 100, 25], [100, 25, 85, 25, 75, 37, 75, 40]];
-var colors = ['#22CAB3', '#22CAB3', '#22CAB3', '#22CAB3', '#22CAB3', '#22CAB3', '#22CAB3', '#FF7784', '#FF7784', '#FF7784'];
+
 function dance(child, scale) {
 
     child.scaleTo(scale, 2000, {
@@ -1230,13 +1230,13 @@ function dance(child, scale) {
         var curve = new Curve({
             x: 200,
             y: 100,
-            color: colors[i],
+            color: 'red',
             points: data[i]
         });
         stage.add(curve);
     }
 
-    stage.children.forEach(function (child, index) {
+    stage.children.forEach(function (child) {
         dance(child, 2);
     });
 })();

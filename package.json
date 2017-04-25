@@ -12,6 +12,7 @@
     "noise": "rollup -c",
     "points-to":"rollup -c",
     "curves": "rollup -c",
+    "scale-to": "rollup -c",
     "watch": "rollup -c -w"
   },
   "repository": {

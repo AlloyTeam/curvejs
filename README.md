@@ -13,6 +13,7 @@ Made curve a dancer in HTML5 canvas.
 
 ## Demos
 
+* [Scale-To](https://alloyteam.github.io/curvejs/pg/rd.html?type=scale)
 * [Points-To](https://alloyteam.github.io/curvejs/pg/rd.html?type=points-to)
 * [Rotate](https://alloyteam.github.io/curvejs/pg/rd.html?type=rotate)
 * [Word](https://alloyteam.github.io/curvejs/pg/rd.html?type=word)
@@ -37,7 +38,7 @@ import curvejs from 'curvejs'
 Or get it by the cdn and link `curve.min.js` in your HTML:
 
 ```html
-<script src="https://unpkg.com/curvejs@0.3.1/dist/curve.min.js"></script>
+<script src="https://unpkg.com/curvejs@0.3.2/dist/curve.min.js"></script>
 ```
 
 Then start to dance:

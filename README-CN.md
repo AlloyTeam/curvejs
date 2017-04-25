@@ -37,6 +37,7 @@ tick()
 
 当然，curvejs的能力不仅仅是变换线，这完全取决于你的想象力。比如：
 
+* [Scale-To](https://alloyteam.github.io/curvejs/pg/rd.html?type=scale)
 * [Points-To](https://alloyteam.github.io/curvejs/pg/rd.html?type=points-to)
 * [Rotate](https://alloyteam.github.io/curvejs/pg/rd.html?type=rotate)
 * [Word](https://alloyteam.github.io/curvejs/pg/rd.html?type=word)
@@ -61,7 +62,7 @@ import curvejs from 'curvejs'
 也可以直接插入script到你的HTML页面:
 
 ```html
-<script src="https://unpkg.com/curvejs@0.3.1/dist/curve.min.js"></script>
+<script src="https://unpkg.com/curvejs@0.3.2/dist/curve.min.js"></script>
 ```
 
 开始跳舞:
