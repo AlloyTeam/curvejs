@@ -20,8 +20,10 @@ class Stage extends Group {
         }
     }
 
-    update() {
-        this.ctx.clearRect(0, 0, this.width, this.height)
+    update(notClear) {
+        if(!notClear){
+            this.ctx.clearRect(0, 0, this.width, this.height)
+        }
         this.children.forEach((child)=> {
             child.draw(this.ctx)
         })

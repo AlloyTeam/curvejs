@@ -9,6 +9,8 @@
     "build": "npm run dev&&npm run dist",
     "simple": "rollup -c",
     "word": "rollup -c",
+    "smooth": "rollup -c",
+    "sprout": "rollup -c",
     "noise": "rollup -c",
     "points-to":"rollup -c",
     "curves": "rollup -c",

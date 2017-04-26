@@ -7,6 +7,7 @@ import perlin from './noise.js'
 import Word from './word.js'
 import color from './color.js'
 import SmoothCurve from './smooth-curve.js'
+import SproutCurve from './sprout-curve.js'
 
 export default {
     Curve,
@@ -16,5 +17,6 @@ export default {
     Word,
     perlin,
     color,
-    SmoothCurve
+    SmoothCurve,
+    SproutCurve
 }
