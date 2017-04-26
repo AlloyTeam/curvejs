@@ -97,7 +97,7 @@ function tick(){
 tick()
 ```
 
-上面的points代表了三次贝塞尔曲线的4个点。motion代表运动方式，motion可以拿去到points和data。motion里函数的this指向Curve是实例curve。
+上面的points代表了三次贝塞尔曲线的4个点。motion代表运动方式，motion可以拿到points和data。motion里函数的this指向Curve是实例curve。
 
 
 ## 使用内置motion
