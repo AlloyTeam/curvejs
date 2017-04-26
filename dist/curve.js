@@ -1,5 +1,5 @@
 /**
- * curvejs v0.3.2 By dntzhang
+ * curvejs v0.3.3 By dntzhang
  * Github: https://github.com/AlloyTeam/curvejs
  * MIT Licensed.
  */
@@ -36,6 +36,332 @@
         window.cancelAnimationFrame = clearTimeout;
     }
 })();
+
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+
+
+
+
+
+
+
+
+var inherits = function (subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+};
+
+
+
+
+
+
+
+
+
+
+
+var possibleConstructorReturn = function (self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return call && (typeof call === "object" || typeof call === "function") ? call : self;
+};
+
+var Curve = function () {
+    function Curve(option) {
+        classCallCheck(this, Curve);
+
+        this.points = option.points || [0, 0, 0, 0, 0, 0, 0, 0];
+        this.color = option.color || 'black';
+        this.x = option.x || 0;
+        this.y = option.y || 0;
+        this.vision = option.vision || [];
+        this.visionMax = 720;
+        this.visionInterval = option.visionInterval || 10;
+
+        this._preDate = Date.now();
+        this._now = new Date();
+
+        this.data = option.data;
+
+        this._noop = function () {};
+        this._ease = function (value) {
+            return value;
+        };
+        this._targetPoints = null;
+
+        this.copyPoints = this.points.slice(0);
+        this.motion = option.motion || this._noop;
+
+        this.visionAlpha = option.visionAlpha === void 0 ? 0.2 : option.visionAlpha;
+
+        if (option.initVision === void 0 || option.initVision) {
+            this._initVision(option.visionCount || 80);
+        }
+    }
+
+    createClass(Curve, [{
+        key: '_initVision',
+        value: function _initVision() {
+            var i = 0;
+            for (; i < 80; i++) {
+                this.tick(true);
+            }
+        }
+    }, {
+        key: 'tick',
+        value: function tick(tickSelf) {
+            this._now = Date.now();
+            if (this._now - this._preDate > this.visionInterval || tickSelf) {
+
+                this.vision.push.apply(this.vision, this.points);
+                this.vision.push(this.color);
+
+                if (this.vision.length > this.visionMax) {
+                    this.vision.splice(0, 9);
+                }
+                this._preDate = this._now;
+            }
+
+            if (!this.pauseMotion) {
+                this.motion.call(this, this.points, this.data);
+            }
+
+            if (this._targetPoints) {
+                this._pointsTo();
+            }
+        }
+    }, {
+        key: 'pause',
+        value: function pause() {
+            this.pauseMotion = true;
+        }
+    }, {
+        key: 'play',
+        value: function play() {
+            this.pauseMotion = false;
+        }
+    }, {
+        key: 'draw',
+        value: function draw(ctx) {
+            this.tick();
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.globalAlpha = 1;
+            ctx.strokeStyle = this.color;
+            var points = this.points;
+            ctx.beginPath();
+            ctx.moveTo.call(ctx, points[0], points[1]);
+            ctx.bezierCurveTo.call(ctx, points[2], points[3], points[4], points[5], points[6], points[7]);
+            ctx.stroke();
+
+            var vision = this.vision;
+
+            var i = 0,
+                len = vision.length;
+            for (; i < len; i += 9) {
+                ctx.globalAlpha = i / this.visionMax * this.visionAlpha;
+                ctx.strokeStyle = vision[i + 8];
+                ctx.beginPath();
+                ctx.moveTo.call(ctx, vision[i], vision[i + 1]);
+                ctx.bezierCurveTo.call(ctx, vision[i + 2], vision[i + 3], vision[i + 4], vision[i + 5], vision[i + 6], vision[i + 7]);
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+    }, {
+        key: 'pointsTo',
+        value: function pointsTo(points, time, option) {
+            this.pause();
+            var ps = this.points;
+            this._targetPoints = points;
+            this._pto = option;
+            this._ptStart = option.start || this._noop;
+            this._ptProgress = option.progress || this._noop;
+            this._ptEnd = option.end || this._noop;
+            this._ptEase = option.ease || this._ease;
+            this._ptTime = time;
+            this._ptStartTime = Date.now();
+            this._ptCopyPoints = ps.slice(0);
+
+            this._ptDistance = [points[0] - ps[0], points[1] - ps[1], points[2] - ps[2], points[3] - ps[3], points[4] - ps[4], points[5] - ps[5], points[6] - ps[6], points[7] - ps[7]];
+
+            this._ptStart.call(this, 0);
+        }
+    }, {
+        key: 'translatePoints',
+        value: function translatePoints(xy, time, option) {
+
+            xy = Object.assign({ x: 0, y: 0 }, xy);
+            var ps = this.points;
+            this.pointsTo([ps[0] + xy.x, ps[1] + xy.y, ps[2] + xy.x, ps[3] + xy.y, ps[4] + xy.x, ps[5] + xy.y, ps[6] + xy.x, ps[7] + xy.y], time, option);
+        }
+    }, {
+        key: 'scaleTo',
+        value: function scaleTo(scale, time, option) {
+            var scaleX = 1,
+                scaleY = 1;
+            if (typeof scale === 'number') {
+                scaleX = scaleY = scale;
+            } else {
+                scale.scaleX !== void 0 && (scaleX = scale.scaleX)(scale.scaleY !== void 0) && (scaleY = scale.scaleX);
+            }
+
+            var points = this.points;
+            var centerX = option.center !== void 0 ? option.center[0] : (points[0] + points[6]) / 2;
+            var centerY = option.center !== void 0 ? option.center[1] : (points[1] + points[7]) / 2;
+
+            this.pointsTo([scaleX * (points[0] - centerX) + centerX, scaleY * (points[1] - centerY) + centerY, scaleX * (points[2] - centerX) + centerX, scaleY * (points[3] - centerY) + centerY, scaleX * (points[4] - centerX) + centerX, scaleY * (points[5] - centerY) + centerY, scaleX * (points[6] - centerX) + centerX, scaleY * (points[7] - centerY) + centerY], time, option);
+        }
+    }, {
+        key: 'rotateTo',
+        value: function rotateTo(rotation, time, option) {}
+    }, {
+        key: '_pointsTo',
+        value: function _pointsTo() {
+            var _this = this;
+
+            var ps = this.points;
+            var dt = Date.now() - this._ptStartTime;
+            if (dt < this._ptTime) {
+                var progress = dt / this._ptTime;
+                ps.forEach(function (v, i) {
+                    ps[i] = _this._ptCopyPoints[i] + _this._ptDistance[i] * _this._ptEase(progress);
+                });
+                this._ptProgress.call(this, progress);
+            } else {
+                ps = this._targetPoints.slice(0);
+                this._targetPoints = null;
+                this._ptEnd.call(this, 1);
+            }
+        }
+    }, {
+        key: 'colorTo',
+        value: function colorTo() {}
+    }, {
+        key: 'clone',
+        value: function clone() {}
+    }]);
+    return Curve;
+}();
+
+var Group = function () {
+    function Group() {
+        classCallCheck(this, Group);
+
+        this.children = [];
+    }
+
+    createClass(Group, [{
+        key: "add",
+        value: function add(line) {
+            this.children.push(line);
+        }
+    }, {
+        key: "remove",
+        value: function remove(line) {
+            var i = 0,
+                len = this.children.length;
+            for (; i < len; i++) {
+
+                if (line === this.children[i]) {
+
+                    this.children.splice(i, 1);
+                    break;
+                }
+            }
+        }
+    }, {
+        key: "draw",
+        value: function draw(ctx) {
+            this.children.forEach(function (child) {
+                child.draw(ctx);
+            });
+        }
+    }]);
+    return Group;
+}();
+
+var Stage = function (_Group) {
+    inherits(Stage, _Group);
+
+    function Stage(width, height, renderTo) {
+        classCallCheck(this, Stage);
+
+        var _this = possibleConstructorReturn(this, (Stage.__proto__ || Object.getPrototypeOf(Stage)).call(this));
+
+        if (arguments.length === 1) {
+            _this.canvas = width;
+            _this.ctx = _this.canvas.getContext('2d');
+            _this.width = _this.canvas.width;
+            _this.height = _this.canvas.height;
+        } else if (arguments.length === 3) {
+            _this.canvas = document.createElement('canvas');
+            _this.canvas.width = width;
+            _this.canvas.height = height;
+            _this.width = width;
+            _this.height = height;
+            _this.ctx = _this.canvas.getContext('2d');
+            document.querySelector(renderTo).appendChild(_this.canvas);
+        }
+        return _this;
+    }
+
+    createClass(Stage, [{
+        key: 'update',
+        value: function update() {
+            var _this2 = this;
+
+            this.ctx.clearRect(0, 0, this.width, this.height);
+            this.children.forEach(function (child) {
+                child.draw(_this2.ctx);
+            });
+        }
+    }, {
+        key: 'addExistLine',
+        value: function addExistLine(process) {}
+    }, {
+        key: 'sameAs',
+        value: function sameAs(index) {}
+    }]);
+    return Stage;
+}(Group);
 
 /**
  * dance motion, spin around.
@@ -597,332 +923,6 @@ var motion = {
     noise: noise
 };
 
-var classCallCheck = function (instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-};
-
-var createClass = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
-    }
-  }
-
-  return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) defineProperties(Constructor, staticProps);
-    return Constructor;
-  };
-}();
-
-
-
-
-
-
-
-
-
-var inherits = function (subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
-  }
-
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      enumerable: false,
-      writable: true,
-      configurable: true
-    }
-  });
-  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-};
-
-
-
-
-
-
-
-
-
-
-
-var possibleConstructorReturn = function (self, call) {
-  if (!self) {
-    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-  }
-
-  return call && (typeof call === "object" || typeof call === "function") ? call : self;
-};
-
-var Curve = function () {
-    function Curve(option) {
-        classCallCheck(this, Curve);
-
-        this.points = option.points || [0, 0, 0, 0, 0, 0, 0, 0];
-        this.color = option.color || 'black';
-        this.x = option.x || 0;
-        this.y = option.y || 0;
-        this.vision = option.vision || [];
-        this.visionMax = 720;
-        this.visionInterval = option.visionInterval || 10;
-
-        this._preDate = Date.now();
-        this._now = new Date();
-
-        this.data = option.data;
-
-        this._noop = function () {};
-        this._ease = function (value) {
-            return value;
-        };
-        this._targetPoints = null;
-
-        this.copyPoints = this.points.slice(0);
-        this.motion = option.motion || this._noop;
-
-        this.visionAlpha = option.visionAlpha === void 0 ? 0.2 : option.visionAlpha;
-
-        if (option.initVision === void 0 || option.initVision) {
-            this._initVision(option.visionCount || 80);
-        }
-    }
-
-    createClass(Curve, [{
-        key: '_initVision',
-        value: function _initVision() {
-            var i = 0;
-            for (; i < 80; i++) {
-                this.tick(true);
-            }
-        }
-    }, {
-        key: 'tick',
-        value: function tick(tickSelf) {
-            this._now = Date.now();
-            if (this._now - this._preDate > this.visionInterval || tickSelf) {
-
-                this.vision.push.apply(this.vision, this.points);
-                this.vision.push(this.color);
-
-                if (this.vision.length > this.visionMax) {
-                    this.vision.splice(0, 9);
-                }
-                this._preDate = this._now;
-            }
-
-            if (!this.pauseMotion) {
-                this.motion.call(this, this.points, this.data);
-            }
-
-            if (this._targetPoints) {
-                this._pointsTo();
-            }
-        }
-    }, {
-        key: 'pause',
-        value: function pause() {
-            this.pauseMotion = true;
-        }
-    }, {
-        key: 'play',
-        value: function play() {
-            this.pauseMotion = false;
-        }
-    }, {
-        key: 'draw',
-        value: function draw(ctx) {
-            this.tick();
-            ctx.save();
-            ctx.translate(this.x, this.y);
-            ctx.globalAlpha = 1;
-            ctx.strokeStyle = this.color;
-            var points = this.points;
-            ctx.beginPath();
-            ctx.moveTo.call(ctx, points[0], points[1]);
-            ctx.bezierCurveTo.call(ctx, points[2], points[3], points[4], points[5], points[6], points[7]);
-            ctx.stroke();
-
-            var vision = this.vision;
-
-            var i = 0,
-                len = vision.length;
-            for (; i < len; i += 9) {
-                ctx.globalAlpha = i / this.visionMax * this.visionAlpha;
-                ctx.strokeStyle = vision[i + 8];
-                ctx.beginPath();
-                ctx.moveTo.call(ctx, vision[i], vision[i + 1]);
-                ctx.bezierCurveTo.call(ctx, vision[i + 2], vision[i + 3], vision[i + 4], vision[i + 5], vision[i + 6], vision[i + 7]);
-                ctx.stroke();
-            }
-            ctx.restore();
-        }
-    }, {
-        key: 'pointsTo',
-        value: function pointsTo(points, time, option) {
-            this.pause();
-            var ps = this.points;
-            this._targetPoints = points;
-            this._pto = option;
-            this._ptStart = option.start || this._noop;
-            this._ptProgress = option.progress || this._noop;
-            this._ptEnd = option.end || this._noop;
-            this._ptEase = option.ease || this._ease;
-            this._ptTime = time;
-            this._ptStartTime = Date.now();
-            this._ptCopyPoints = ps.slice(0);
-
-            this._ptDistance = [points[0] - ps[0], points[1] - ps[1], points[2] - ps[2], points[3] - ps[3], points[4] - ps[4], points[5] - ps[5], points[6] - ps[6], points[7] - ps[7]];
-
-            this._ptStart.call(this, 0);
-        }
-    }, {
-        key: 'translatePoints',
-        value: function translatePoints(xy, time, option) {
-
-            xy = Object.assign({ x: 0, y: 0 }, xy);
-            var ps = this.points;
-            this.pointsTo([ps[0] + xy.x, ps[1] + xy.y, ps[2] + xy.x, ps[3] + xy.y, ps[4] + xy.x, ps[5] + xy.y, ps[6] + xy.x, ps[7] + xy.y], time, option);
-        }
-    }, {
-        key: 'scaleTo',
-        value: function scaleTo(scale, time, option) {
-            var scaleX = 1,
-                scaleY = 1;
-            if (typeof scale === 'number') {
-                scaleX = scaleY = scale;
-            } else {
-                scale.scaleX !== void 0 && (scaleX = scale.scaleX)(scale.scaleY !== void 0) && (scaleY = scale.scaleX);
-            }
-
-            var points = this.points;
-            var centerX = option.center !== void 0 ? option.center[0] : (points[0] + points[6]) / 2;
-            var centerY = option.center !== void 0 ? option.center[1] : (points[1] + points[7]) / 2;
-
-            this.pointsTo([scaleX * (points[0] - centerX) + centerX, scaleY * (points[1] - centerY) + centerY, scaleX * (points[2] - centerX) + centerX, scaleY * (points[3] - centerY) + centerY, scaleX * (points[4] - centerX) + centerX, scaleY * (points[5] - centerY) + centerY, scaleX * (points[6] - centerX) + centerX, scaleY * (points[7] - centerY) + centerY], time, option);
-        }
-    }, {
-        key: 'rotateTo',
-        value: function rotateTo(rotation, time, option) {}
-    }, {
-        key: '_pointsTo',
-        value: function _pointsTo() {
-            var _this = this;
-
-            var ps = this.points;
-            var dt = Date.now() - this._ptStartTime;
-            if (dt < this._ptTime) {
-                var progress = dt / this._ptTime;
-                ps.forEach(function (v, i) {
-                    ps[i] = _this._ptCopyPoints[i] + _this._ptDistance[i] * _this._ptEase(progress);
-                });
-                this._ptProgress.call(this, progress);
-            } else {
-                ps = this._targetPoints.slice(0);
-                this._targetPoints = null;
-                this._ptEnd.call(this, 1);
-            }
-        }
-    }, {
-        key: 'colorTo',
-        value: function colorTo() {}
-    }, {
-        key: 'clone',
-        value: function clone() {}
-    }]);
-    return Curve;
-}();
-
-var Group = function () {
-    function Group() {
-        classCallCheck(this, Group);
-
-        this.children = [];
-    }
-
-    createClass(Group, [{
-        key: "add",
-        value: function add(line) {
-            this.children.push(line);
-        }
-    }, {
-        key: "remove",
-        value: function remove(line) {
-            var i = 0,
-                len = this.children.length;
-            for (; i < len; i++) {
-
-                if (line === this.children[i]) {
-
-                    this.children.splice(i, 1);
-                    break;
-                }
-            }
-        }
-    }, {
-        key: "draw",
-        value: function draw(ctx) {
-            this.children.forEach(function (child) {
-                child.draw(ctx);
-            });
-        }
-    }]);
-    return Group;
-}();
-
-var Stage = function (_Group) {
-    inherits(Stage, _Group);
-
-    function Stage(width, height, renderTo) {
-        classCallCheck(this, Stage);
-
-        var _this = possibleConstructorReturn(this, (Stage.__proto__ || Object.getPrototypeOf(Stage)).call(this));
-
-        if (arguments.length === 1) {
-            _this.canvas = width;
-            _this.ctx = _this.canvas.getContext('2d');
-            _this.width = _this.canvas.width;
-            _this.height = _this.canvas.height;
-        } else if (arguments.length === 3) {
-            _this.canvas = document.createElement('canvas');
-            _this.canvas.width = width;
-            _this.canvas.height = height;
-            _this.width = width;
-            _this.height = height;
-            _this.ctx = _this.canvas.getContext('2d');
-            document.querySelector(renderTo).appendChild(_this.canvas);
-        }
-        return _this;
-    }
-
-    createClass(Stage, [{
-        key: 'update',
-        value: function update() {
-            var _this2 = this;
-
-            this.ctx.clearRect(0, 0, this.width, this.height);
-            this.children.forEach(function (child) {
-                child.draw(_this2.ctx);
-            });
-        }
-    }, {
-        key: 'addExistLine',
-        value: function addExistLine(process) {}
-    }, {
-        key: 'sameAs',
-        value: function sameAs(index) {}
-    }]);
-    return Stage;
-}(Group);
-
 var wordData = {
     'c': [[70, 70, 12, 76, 12, 123, 70, 128]],
     'u': [[25, 68, 23, 140, 80, 140, 74, 100], [73, 62, 72, 90, 75, 110, 93, 134]],
@@ -1201,6 +1201,126 @@ var color = {
     makeGradientColor: makeGradientColor
 };
 
+var SmoothCurve = function () {
+    function SmoothCurve(option) {
+        classCallCheck(this, SmoothCurve);
+
+        this.points = option.points || [0, 0, 0, 0, 0, 0];
+        this.color = option.color || 'black';
+        this.x = option.x || 0;
+        this.y = option.y || 0;
+        this.vision = option.vision || [];
+        this.visionMax = 80;
+        this.visionInterval = option.visionInterval || 10;
+
+        this._preDate = Date.now();
+        this._now = new Date();
+
+        this.data = option.data;
+
+        this._noop = function () {};
+        this._ease = function (value) {
+            return value;
+        };
+        this._targetPoints = null;
+
+        this.copyPoints = this.points.slice(0);
+        this.motion = option.motion || this._noop;
+
+        this.visionAlpha = option.visionAlpha === void 0 ? 0.2 : option.visionAlpha;
+
+        if (option.initVision === void 0 || option.initVision) {
+            this._initVision(option.visionCount || 80);
+        }
+    }
+
+    createClass(SmoothCurve, [{
+        key: '_initVision',
+        value: function _initVision() {
+            var i = 0;
+            for (; i < 80; i++) {
+                this.tick(true);
+            }
+        }
+    }, {
+        key: 'tick',
+        value: function tick(tickSelf) {
+            this._now = Date.now();
+            if (this._now - this._preDate > this.visionInterval || tickSelf) {
+
+                this.vision.push(this.points.slice(0));
+
+                if (this.vision.length > this.visionMax) {
+                    this.vision.splice(0, 1);
+                }
+                this._preDate = this._now;
+            }
+
+            if (!this.pauseMotion) {
+                this.motion.call(this, this.points, this.data);
+            }
+
+            if (this._targetPoints) {
+                this._pointsTo();
+            }
+        }
+    }, {
+        key: 'pause',
+        value: function pause() {
+            this.pauseMotion = true;
+        }
+    }, {
+        key: 'play',
+        value: function play() {
+            this.pauseMotion = false;
+        }
+    }, {
+        key: 'draw',
+        value: function draw(ctx) {
+            this.tick();
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.globalAlpha = 1;
+            ctx.strokeStyle = this.color;
+            var points = this.points;
+
+            ctx.beginPath();
+            ctx.moveTo(points[0], points[1]);
+            for (var i = 2, len = points.length; i < len; i += 2) {
+                if (i === points.length - 4) {
+                    ctx.quadraticCurveTo(points[i], points[i + 1], points[i + 2], points[i + 3]);
+                } else {
+                    ctx.quadraticCurveTo(points[i], points[i + 1], (points[i] + points[i + 2]) / 2, (points[i + 1] + points[i + 3]) / 2);
+                }
+            }
+            ctx.stroke();
+            //debug
+            //ctx.beginPath();
+            //ctx.globalAlpha = 0.3
+            //ctx.moveTo(points[0], points[1]);
+            //for (let i = 2, len = points.length; i < len; i += 2) {
+            //    ctx.lineTo(points[i], points[i + 1]);
+            //}
+            //ctx.stroke();
+
+            var vision = this.vision;
+
+            for (var _i = 0, _len = vision.length; _i < _len; _i++) {
+                ctx.globalAlpha = _i / this.visionMax * this.visionAlpha;
+                var vp = vision[_i];
+                ctx.beginPath();
+                ctx.moveTo(vp[0], vp[1]);
+                for (var _i2 = 2, vlen = vp.length; _i2 < vlen; _i2 += 2) {
+                    ctx.quadraticCurveTo(vp[_i2], vp[_i2 + 1], (vp[_i2] + vp[_i2 + 2]) / 2, (vp[_i2 + 1] + vp[_i2 + 3]) / 2);
+                }
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+    }]);
+    return SmoothCurve;
+}();
+
 var index = {
     Curve: Curve,
     Group: Group,
@@ -1208,7 +1328,8 @@ var index = {
     motion: motion,
     Word: Word,
     perlin: p5,
-    color: color
+    color: color,
+    SmoothCurve: SmoothCurve
 };
 
 return index;
