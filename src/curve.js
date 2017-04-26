@@ -1,4 +1,3 @@
-import motion from './motion/index.js'
 
 class Curve {
     constructor(option) {
