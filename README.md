@@ -13,6 +13,7 @@ Made curve a dancer in HTML5 canvas.
 
 ## Demos
 
+* [Sprout](https://alloyteam.github.io/curvejs/example/sprout/)
 * [Scale-To](https://alloyteam.github.io/curvejs/pg/rd.html?type=scale)
 * [Points-To](https://alloyteam.github.io/curvejs/pg/rd.html?type=points-to)
 * [Rotate](https://alloyteam.github.io/curvejs/pg/rd.html?type=rotate)

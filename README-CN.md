@@ -37,6 +37,7 @@ tick()
 
 当然，curvejs的能力不仅仅是变换线，这完全取决于你的想象力。比如：
 
+* [Sprout](https://alloyteam.github.io/curvejs/example/sprout/)
 * [Scale-To](https://alloyteam.github.io/curvejs/pg/rd.html?type=scale)
 * [Points-To](https://alloyteam.github.io/curvejs/pg/rd.html?type=points-to)
 * [Rotate](https://alloyteam.github.io/curvejs/pg/rd.html?type=rotate)
