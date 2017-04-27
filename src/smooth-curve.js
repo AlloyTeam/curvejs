@@ -104,7 +104,11 @@ class SmoothCurve {
             ctx.beginPath();
             ctx.moveTo(vp[0], vp[1]);
             for (let i = 2, vlen = vp.length; i < vlen; i += 2) {
-                ctx.quadraticCurveTo(vp[i], vp[i + 1], (vp[i] + vp[i + 2]) / 2, ((vp[i + 1] + vp[i + 3]) / 2));
+                if (i === points.length - 4) {
+                    ctx.quadraticCurveTo(vp[i], vp[i + 1], vp[i + 2], vp[i + 3]);
+                } else {
+                    ctx.quadraticCurveTo(vp[i], vp[i + 1], (vp[i] + vp[i + 2]) / 2, ((vp[i + 1] + vp[i + 3]) / 2));
+                }
             }
             ctx.stroke();
 

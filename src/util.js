@@ -9,6 +9,11 @@ var util = {
         // return '#'+(Math.random()*0xffffff<<0).toString(16);
     },
 
+    map: function (value, start, end, valueStart, valueEnd) {
+
+        return valueStart + (valueEnd - valueStart) * value / (end - start)
+    },
+
     randomSpeed: function () {
         return (Math.random() > 0.5 ? 1 : -1) * Math.random() * 2
     }
