@@ -345,10 +345,12 @@ var Stage = function (_Group) {
 
     createClass(Stage, [{
         key: 'update',
-        value: function update() {
+        value: function update(notClear) {
             var _this2 = this;
 
-            this.ctx.clearRect(0, 0, this.width, this.height);
+            if (!notClear) {
+                this.ctx.clearRect(0, 0, this.width, this.height);
+            }
             this.children.forEach(function (child) {
                 child.draw(_this2.ctx);
             });
@@ -1210,28 +1212,32 @@ var SmoothCurve = function () {
         this.x = option.x || 0;
         this.y = option.y || 0;
         this.vision = option.vision || [];
-        this.visionMax = 80;
+        this.visionMax = option.visionMax !== void 0 ? option.visionMax : 80;
         this.visionInterval = option.visionInterval || 10;
-
+        this.disableVision = option.disableVision;
         this._preDate = Date.now();
         this._now = new Date();
-
+        this.debug = option.debug;
+        this.size = option.size || 1;
         this.data = option.data;
 
-        this._noop = function () {};
+        var noop = function noop() {};
         this._ease = function (value) {
             return value;
         };
         this._targetPoints = null;
 
         this.copyPoints = this.points.slice(0);
-        this.motion = option.motion || this._noop;
+        this.motion = option.motion || noop;
 
         this.visionAlpha = option.visionAlpha === void 0 ? 0.2 : option.visionAlpha;
 
         if (option.initVision === void 0 || option.initVision) {
             this._initVision(option.visionCount || 80);
         }
+
+        this.beforeDraw = option.beforeDraw || noop;
+        this.afterDraw = option.afterDraw || noop;
     }
 
     createClass(SmoothCurve, [{
@@ -1245,15 +1251,17 @@ var SmoothCurve = function () {
     }, {
         key: 'tick',
         value: function tick(tickSelf) {
-            this._now = Date.now();
-            if (this._now - this._preDate > this.visionInterval || tickSelf) {
+            if (!this.disableVision) {
+                this._now = Date.now();
+                if (this._now - this._preDate > this.visionInterval || tickSelf) {
 
-                this.vision.push(this.points.slice(0));
+                    this.vision.push(this.points.slice(0));
 
-                if (this.vision.length > this.visionMax) {
-                    this.vision.splice(0, 1);
+                    if (this.vision.length > this.visionMax) {
+                        this.vision.splice(0, 1);
+                    }
+                    this._preDate = this._now;
                 }
-                this._preDate = this._now;
             }
 
             if (!this.pauseMotion) {
@@ -1278,8 +1286,12 @@ var SmoothCurve = function () {
         key: 'draw',
         value: function draw(ctx) {
             this.tick();
+
+            this.beforeDraw.call(this, ctx);
+
             ctx.save();
             ctx.translate(this.x, this.y);
+            ctx.lineWidth = this.size;
             ctx.globalAlpha = 1;
             ctx.strokeStyle = this.color;
             var points = this.points;
@@ -1294,31 +1306,132 @@ var SmoothCurve = function () {
                 }
             }
             ctx.stroke();
-            //debug
-            //ctx.beginPath();
-            //ctx.globalAlpha = 0.3
-            //ctx.moveTo(points[0], points[1]);
-            //for (let i = 2, len = points.length; i < len; i += 2) {
-            //    ctx.lineTo(points[i], points[i + 1]);
-            //}
-            //ctx.stroke();
+
+            if (this.debug) {
+                ctx.beginPath();
+                ctx.globalAlpha = 0.3;
+                ctx.moveTo(points[0], points[1]);
+                for (var _i = 2, _len = points.length; _i < _len; _i += 2) {
+                    ctx.lineTo(points[_i], points[_i + 1]);
+                }
+                ctx.stroke();
+            }
 
             var vision = this.vision;
-
-            for (var _i = 0, _len = vision.length; _i < _len; _i++) {
-                ctx.globalAlpha = _i / this.visionMax * this.visionAlpha;
-                var vp = vision[_i];
+            for (var _i2 = 0, _len2 = vision.length; _i2 < _len2; _i2++) {
+                ctx.globalAlpha = _i2 / this.visionMax * this.visionAlpha;
+                var vp = vision[_i2];
                 ctx.beginPath();
                 ctx.moveTo(vp[0], vp[1]);
-                for (var _i2 = 2, vlen = vp.length; _i2 < vlen; _i2 += 2) {
-                    ctx.quadraticCurveTo(vp[_i2], vp[_i2 + 1], (vp[_i2] + vp[_i2 + 2]) / 2, (vp[_i2 + 1] + vp[_i2 + 3]) / 2);
+                for (var _i3 = 2, vlen = vp.length; _i3 < vlen; _i3 += 2) {
+                    if (_i3 === points.length - 4) {
+                        ctx.quadraticCurveTo(vp[_i3], vp[_i3 + 1], vp[_i3 + 2], vp[_i3 + 3]);
+                    } else {
+                        ctx.quadraticCurveTo(vp[_i3], vp[_i3 + 1], (vp[_i3] + vp[_i3 + 2]) / 2, (vp[_i3 + 1] + vp[_i3 + 3]) / 2);
+                    }
                 }
                 ctx.stroke();
             }
             ctx.restore();
+
+            this.afterDraw.call(this, ctx);
         }
     }]);
     return SmoothCurve;
+}();
+
+/**
+ * Created by dntzhang on 2017/4/26.
+ */
+var SproutCurve = function () {
+    function SproutCurve(option) {
+        classCallCheck(this, SproutCurve);
+
+        this.seeds = [];
+        this.initAlpha = 0.2;
+        this.startLife = 250;
+        this.noise = { value: 0, step: 0.0008, scale: 2, interval: 10 };
+        this.color = option.color || '#65ffff';
+    }
+
+    createClass(SproutCurve, [{
+        key: 'addSeed',
+        value: function addSeed(x, y, vx, vy) {
+            this.seeds.push({
+                x: x,
+                y: y,
+                vx: vx,
+                vy: vy,
+                px: x,
+                py: y,
+                life: this.startLife
+            });
+        }
+    }, {
+        key: 'sprout',
+        value: function sprout() {
+
+            while (this.seeds.length && this.seeds[0].life === 0) {
+                this.seeds.shift();
+            }
+            var dx = 0,
+                dy = 0;
+            for (var i = 0, len = this.seeds.length; i < len; i++) {
+                dx = dy = 0;
+                var seed = this.seeds[i];
+                var nv = p5.noise(this.noise.value + i * this.noise.interval) * Math.PI * 5;
+                this.noise.value += this.noise.step;
+
+                dx += this.noise.scale * Math.cos(nv);
+                dy += this.noise.scale * Math.sin(nv);
+                seed.life--;
+
+                var nx = seed.x + dx;
+                var ny = seed.y + dy;
+
+                seed.px = seed.x;
+                seed.py = seed.y;
+
+                seed.x = nx;
+                seed.y = ny;
+                //seed.x+=seed.vx*10
+                //seed.y+=seed.vy*10
+            }
+        }
+    }, {
+        key: 'draw',
+        value: function draw(ctx) {
+
+            this.sprout();
+            if (this.seeds.length === 0) return;
+
+            ctx.globalAlpha = this.initAlpha * (this.seeds[this.seeds.length - 1].life / this.startLife);
+            this.points = [];
+
+            for (var i = 0, _len = this.seeds.length; i < _len; i++) {
+                this.points.push(this.seeds[i].x, this.seeds[i].y);
+            }
+            var points = this.points;
+            var len = points.length;
+            if (len > 5) {
+                ctx.beginPath();
+                ctx.globalCompositeOperation = 'lighter';
+                ctx.strokeStyle = this.color;
+
+                ctx.moveTo(points[0], points[1]);
+                for (var _i = 2; _i < len; _i += 2) {
+                    if (_i === points.length - 4) {
+                        ctx.quadraticCurveTo(points[_i], points[_i + 1], points[_i + 2], points[_i + 3]);
+                    } else {
+                        ctx.quadraticCurveTo(points[_i], points[_i + 1], (points[_i] + points[_i + 2]) / 2, (points[_i + 1] + points[_i + 3]) / 2);
+                    }
+                }
+
+                ctx.stroke();
+            }
+        }
+    }]);
+    return SproutCurve;
 }();
 
 var index = {
@@ -1329,7 +1442,8 @@ var index = {
     Word: Word,
     perlin: p5,
     color: color,
-    SmoothCurve: SmoothCurve
+    SmoothCurve: SmoothCurve,
+    SproutCurve: SproutCurve
 };
 
 return index;
