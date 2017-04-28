@@ -1206,28 +1206,32 @@ var SmoothCurve$1 = function () {
         this.x = option.x || 0;
         this.y = option.y || 0;
         this.vision = option.vision || [];
-        this.visionMax = 80;
+        this.visionMax = option.visionMax !== void 0 ? option.visionMax : 80;
         this.visionInterval = option.visionInterval || 10;
-
+        this.disableVision = option.disableVision;
         this._preDate = Date.now();
         this._now = new Date();
-
+        this.debug = option.debug;
+        this.size = option.size || 1;
         this.data = option.data;
 
-        this._noop = function () {};
+        var noop = function noop() {};
         this._ease = function (value) {
             return value;
         };
         this._targetPoints = null;
 
         this.copyPoints = this.points.slice(0);
-        this.motion = option.motion || this._noop;
+        this.motion = option.motion || noop;
 
         this.visionAlpha = option.visionAlpha === void 0 ? 0.2 : option.visionAlpha;
 
         if (option.initVision === void 0 || option.initVision) {
             this._initVision(option.visionCount || 80);
         }
+
+        this.beforeDraw = option.beforeDraw || noop;
+        this.afterDraw = option.afterDraw || noop;
     }
 
     createClass(SmoothCurve, [{
@@ -1241,15 +1245,17 @@ var SmoothCurve$1 = function () {
     }, {
         key: 'tick',
         value: function tick(tickSelf) {
-            this._now = Date.now();
-            if (this._now - this._preDate > this.visionInterval || tickSelf) {
+            if (!this.disableVision) {
+                this._now = Date.now();
+                if (this._now - this._preDate > this.visionInterval || tickSelf) {
 
-                this.vision.push(this.points.slice(0));
+                    this.vision.push(this.points.slice(0));
 
-                if (this.vision.length > this.visionMax) {
-                    this.vision.splice(0, 1);
+                    if (this.vision.length > this.visionMax) {
+                        this.vision.splice(0, 1);
+                    }
+                    this._preDate = this._now;
                 }
-                this._preDate = this._now;
             }
 
             if (!this.pauseMotion) {
@@ -1274,8 +1280,12 @@ var SmoothCurve$1 = function () {
         key: 'draw',
         value: function draw(ctx) {
             this.tick();
+
+            this.beforeDraw.call(this, ctx);
+
             ctx.save();
             ctx.translate(this.x, this.y);
+            ctx.lineWidth = this.size;
             ctx.globalAlpha = 1;
             ctx.strokeStyle = this.color;
             var points = this.points;
@@ -1290,32 +1300,35 @@ var SmoothCurve$1 = function () {
                 }
             }
             ctx.stroke();
-            //debug
-            //ctx.beginPath();
-            //ctx.globalAlpha = 0.3
-            //ctx.moveTo(points[0], points[1]);
-            //for (let i = 2, len = points.length; i < len; i += 2) {
-            //    ctx.lineTo(points[i], points[i + 1]);
-            //}
-            //ctx.stroke();
+
+            if (this.debug) {
+                ctx.beginPath();
+                ctx.globalAlpha = 0.3;
+                ctx.moveTo(points[0], points[1]);
+                for (var _i = 2, _len = points.length; _i < _len; _i += 2) {
+                    ctx.lineTo(points[_i], points[_i + 1]);
+                }
+                ctx.stroke();
+            }
 
             var vision = this.vision;
-
-            for (var _i = 0, _len = vision.length; _i < _len; _i++) {
-                ctx.globalAlpha = _i / this.visionMax * this.visionAlpha;
-                var vp = vision[_i];
+            for (var _i2 = 0, _len2 = vision.length; _i2 < _len2; _i2++) {
+                ctx.globalAlpha = _i2 / this.visionMax * this.visionAlpha;
+                var vp = vision[_i2];
                 ctx.beginPath();
                 ctx.moveTo(vp[0], vp[1]);
-                for (var _i2 = 2, vlen = vp.length; _i2 < vlen; _i2 += 2) {
-                    if (_i2 === points.length - 4) {
-                        ctx.quadraticCurveTo(vp[_i2], vp[_i2 + 1], vp[_i2 + 2], vp[_i2 + 3]);
+                for (var _i3 = 2, vlen = vp.length; _i3 < vlen; _i3 += 2) {
+                    if (_i3 === points.length - 4) {
+                        ctx.quadraticCurveTo(vp[_i3], vp[_i3 + 1], vp[_i3 + 2], vp[_i3 + 3]);
                     } else {
-                        ctx.quadraticCurveTo(vp[_i2], vp[_i2 + 1], (vp[_i2] + vp[_i2 + 2]) / 2, (vp[_i2 + 1] + vp[_i2 + 3]) / 2);
+                        ctx.quadraticCurveTo(vp[_i3], vp[_i3 + 1], (vp[_i3] + vp[_i3 + 2]) / 2, (vp[_i3 + 1] + vp[_i3 + 3]) / 2);
                     }
                 }
                 ctx.stroke();
             }
             ctx.restore();
+
+            this.afterDraw.call(this, ctx);
         }
     }]);
     return SmoothCurve;
@@ -1435,28 +1448,65 @@ var perlin = curvejs.perlin;
 
 var canvas = document.getElementById('myCanvas');
 var stage = new Stage(canvas);
+var bgImg = new Image();
 
 var map = function map(value, start, end, valueStart, valueEnd) {
-
     return valueStart + (valueEnd - valueStart) * value / (end - start);
 };
 
 var curve = new SmoothCurve({
-    color: '#00FF00',
-    points: [96, 159, 150, 95, 192, 166, 258, 101, 307, 168, 375, 100],
+    color: '#ffffff',
+    size: 3,
+    points: [99, 219, 110, 219, 120, 222, 130, 222, 137, 221, 147, 221, 165, 221, 175, 221, 189, 224, 199, 224, 216, 227, 226, 227, 240, 223, 250, 223, 267, 224, 277, 224, 290, 219],
     data: { value: 0, step: 0.001, interval: 10 },
     motion: function motion(points, data) {
-        points.forEach(function (item, index) {
-            if (index % 2 === 1) {
-                points[index] += map(perlin.noise(data.value + data.interval * index), 0, 1, -1, 1);
+        var _this = this;
 
+        points.forEach(function (item, index) {
+            if (index % 2 === 1 && index !== 1 && index !== points.length - 1) {
+                points[index] = map(perlin.noise(data.value + data.interval * index), 0, 1, _this.copyPoints[index] - 12, _this.copyPoints[index] - 5 + 12);
                 data.value += data.step;
             }
         });
+    },
+    visionMax: 40,
+    //disableVision:true,
+    //debug:true,
+    beforeDraw: function beforeDraw(ctx) {
+        ctx.drawImage(bgImg, 0, 0);
+    },
+    afterDraw: function afterDraw(ctx) {
+        //draw water
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle = '#00ffff';
+        ctx.globalAlpha = 0.7;
+
+        var points = this.points;
+
+        ctx.beginPath();
+        ctx.moveTo(points[0], points[1]);
+        for (var i = 2, len = points.length; i < len; i += 2) {
+            if (i === points.length - 4) {
+                ctx.quadraticCurveTo(points[i], points[i + 1], points[i + 2], points[i + 3]);
+            } else {
+                ctx.quadraticCurveTo(points[i], points[i + 1], (points[i] + points[i + 2]) / 2, (points[i + 1] + points[i + 3]) / 2);
+            }
+        }
+
+        ctx.bezierCurveTo(280, 286, 256, 289, 195, 286);
+
+        ctx.bezierCurveTo(126, 289, 113, 289, points[0], points[1]);
+        ctx.fill();
+        ctx.restore();
     }
 });
 
-stage.add(curve);
+bgImg.onload = function () {
+    stage.add(curve);
+};
+
+bgImg.src = './bg.png';
 
 function tick$1() {
     stage.update();
