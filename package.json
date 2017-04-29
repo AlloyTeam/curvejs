@@ -13,6 +13,7 @@
     "smooth": "rollup -c -w",
     "sprout": "rollup -c -w",
     "noise": "rollup -c -w",
+    "siri-wave": "rollup -c -w",
     "points-to":"rollup -c -w",
     "curves": "rollup -c -w",
     "scale-to": "rollup -c -w",
