@@ -1488,69 +1488,98 @@ var curvejs = {
 var Stage = curvejs.Stage;
 var SmoothCurve = curvejs.SmoothCurve;
 
+var Vector2 = function () {
+    function Vector2(x, y) {
+        classCallCheck(this, Vector2);
 
-var Vector2 = function Vector2(x, y) {
-    this.x = x;
-    this.y = y;
-};
-
-Vector2.prototype = {
-    sub: function sub(b) {
-        return new Vector2(this.x - b.x, this.y - b.y);
-    },
-    add: function add(b) {
-        return new Vector2(this.x + b.x, this.y + b.y);
-    },
-    subSelf: function subSelf(a) {
-        this.x -= a.x;this.y -= a.y;return this;
-    },
-    setLength: function setLength(a) {
-        return this.normalize().multiplyScalar(a);
-    },
-    multiplyScalar: function multiplyScalar(a) {
-        this.x *= a;this.y *= a;return this;
-    },
-    normalize: function normalize() {
-        return this.divideScalar(this.length());
-    },
-    divideScalar: function divideScalar(a) {
-        if (a) {
-            this.x /= a;this.y /= a;
-        } else this.set(0, 0);return this;
-    },
-    lengthSq: function lengthSq() {
-        return this.x * this.x + this.y * this.y;
-    },
-    length: function length() {
-        return Math.sqrt(this.lengthSq());
+        this.x = x;
+        this.y = y;
     }
-};
 
-var Joint = function Joint(segLength, segCount, isFixed, startPoint) {
-    this.segLength = segLength;
-    this.segCount = segCount;
-    this.isFixed = isFixed;
-    this.startPoint = startPoint;
-    this.points = [];
-    for (var i = 0; i < this.segCount; i++) {
-        this.points.push(new Vector2(this.startPoint.x, this.startPoint.y + i * this.segLength));
-    }
-};
+    createClass(Vector2, [{
+        key: 'sub',
+        value: function sub(b) {
+            return new Vector2(this.x - b.x, this.y - b.y);
+        }
+    }, {
+        key: 'add',
+        value: function add(b) {
+            return new Vector2(this.x + b.x, this.y + b.y);
+        }
+    }, {
+        key: 'subSelf',
+        value: function subSelf(a) {
+            this.x -= a.x;this.y -= a.y;return this;
+        }
+    }, {
+        key: 'setLength',
+        value: function setLength(a) {
+            return this.normalize().multiplyScalar(a);
+        }
+    }, {
+        key: 'multiplyScalar',
+        value: function multiplyScalar(a) {
+            this.x *= a;this.y *= a;return this;
+        }
+    }, {
+        key: 'normalize',
+        value: function normalize() {
+            return this.divideScalar(this.length());
+        }
+    }, {
+        key: 'divideScalar',
+        value: function divideScalar(a) {
+            if (a) {
+                this.x /= a;this.y /= a;
+            } else this.set(0, 0);return this;
+        }
+    }, {
+        key: 'lengthSq',
+        value: function lengthSq() {
+            return this.x * this.x + this.y * this.y;
+        }
+    }, {
+        key: 'length',
+        value: function length() {
+            return Math.sqrt(this.lengthSq());
+        }
+    }]);
+    return Vector2;
+}();
 
-Joint.prototype.updatePointsPosition = function (point, index) {
-    var tempV = this.points[index - 1].sub(point).setLength(this.segLength);
-    this.points[index - 1] = point.add(tempV);
-    if (index > 1) {
-        this.updatePointsPosition(this.points[index - 1], index - 1);
-    } else {
-        if (this.isFixed) {
-            var v = this.points[0].sub(this.startPoint);
-            for (var i = 0; i < this.points.length; i++) {
-                this.points[i].subSelf(v);
-            }
+var Joint = function () {
+    function Joint(segLength, segCount, isFixed, startPoint) {
+        classCallCheck(this, Joint);
+
+        this.segLength = segLength;
+        this.segCount = segCount;
+        this.isFixed = isFixed;
+        this.startPoint = startPoint;
+        this.points = [];
+        for (var i = 0; i < this.segCount; i++) {
+            this.points.push(new Vector2(this.startPoint.x, this.startPoint.y + i * this.segLength));
         }
     }
-};
+
+    createClass(Joint, [{
+        key: 'updatePointsPosition',
+        value: function updatePointsPosition(point, index) {
+            var tempV = this.points[index - 1].sub(point).setLength(this.segLength);
+            this.points[index - 1] = point.add(tempV);
+            if (index > 1) {
+                this.updatePointsPosition(this.points[index - 1], index - 1);
+            } else {
+                if (this.isFixed) {
+                    var v = this.points[0].sub(this.startPoint);
+                    for (var i = 0; i < this.points.length; i++) {
+                        this.points[i].subSelf(v);
+                    }
+                }
+            }
+        }
+    }]);
+    return Joint;
+}();
 
 var canvas = document.getElementById('myCanvas');
 var stage = new Stage(canvas);
