@@ -15,6 +15,8 @@ class SmoothCurve {
         this.size = option.size || 1
         this.data = option.data
 
+        this._stripe = typeof this.color !== 'string'
+
         const noop = function () {
         }
         this._ease = function (value) {
@@ -83,23 +85,91 @@ class SmoothCurve {
         ctx.translate(this.x, this.y)
         ctx.lineWidth = this.size
         ctx.globalAlpha = 1
-        ctx.strokeStyle = this.color
+        this._stripe || (ctx.strokeStyle = this.color)
         var points = this.points
 
-        ctx.beginPath();
-        ctx.moveTo(points[0], points[1]);
-        for (let i = 2, len = points.length; i < len; i += 2) {
-            if (i === points.length - 4) {
-                ctx.quadraticCurveTo(points[i], points[i + 1], points[i + 2], points[i + 3]);
-            } else {
-                ctx.quadraticCurveTo(points[i], points[i + 1], (points[i] + points[i + 2]) / 2, ((points[i + 1] + points[i + 3]) / 2));
+        if(this._stripe){
+
+            ctx.beginPath();
+            ctx.moveTo(points[0], points[1]);
+            for (let i = 2, len = points.length; i < len; i += 2) {
+
+                ctx.strokeStyle = this.color[i / 2 % 2]
+                if (i !== 2) {
+                    ctx.beginPath();
+                    ctx.moveTo( (points[i-2] + points[i ]) / 2, ((points[i-1] + points[i + 1]) / 2));
+                }
+                if (i === points.length - 4) {
+                    ctx.quadraticCurveTo(points[i], points[i + 1], points[i + 2], points[i + 3]);
+                } else {
+                    ctx.quadraticCurveTo(points[i], points[i + 1], (points[i] + points[i + 2]) / 2, ((points[i + 1] + points[i + 3]) / 2));
+                }
+                ctx.stroke();
             }
+
+
+
+
+            var vision = this.vision
+            for (let i = 0, len = vision.length; i < len; i++) {
+                ctx.globalAlpha = i / this.visionMax * this.visionAlpha
+                let vp = vision[i]
+                ctx.beginPath();
+                ctx.moveTo(vp[0], vp[1]);
+                for (let i = 2, vlen = vp.length; i < vlen; i += 2) {
+                    ctx.strokeStyle = this.color[i / 2 % 2]
+                    if (i !== 2) {
+                        ctx.beginPath();
+                        ctx.moveTo( (vp[i-2] + vp[i ]) / 2, ((vp[i-1] + vp[i + 1]) / 2));
+                    }
+                    if (i === points.length - 4) {
+                        ctx.quadraticCurveTo(vp[i], vp[i + 1], vp[i + 2], vp[i + 3]);
+                    } else {
+                        ctx.quadraticCurveTo(vp[i], vp[i + 1], (vp[i] + vp[i + 2]) / 2, ((vp[i + 1] + vp[i + 3]) / 2));
+                    }
+
+                    ctx.stroke();
+                }
+
+            }
+
+        }else{
+            ctx.beginPath();
+            ctx.moveTo(points[0], points[1]);
+            for (let i = 2, len = points.length; i < len; i += 2) {
+                if (i === points.length - 4) {
+                    ctx.quadraticCurveTo(points[i], points[i + 1], points[i + 2], points[i + 3]);
+                } else {
+                    ctx.quadraticCurveTo(points[i], points[i + 1], (points[i] + points[i + 2]) / 2, ((points[i + 1] + points[i + 3]) / 2));
+                }
+            }
+            ctx.stroke();
+
+
+
+            var vision = this.vision
+            for (let i = 0, len = vision.length; i < len; i++) {
+                ctx.globalAlpha = i / this.visionMax * this.visionAlpha
+                let vp = vision[i]
+                ctx.beginPath();
+                ctx.moveTo(vp[0], vp[1]);
+                for (let i = 2, vlen = vp.length; i < vlen; i += 2) {
+                    if (i === points.length - 4) {
+                        ctx.quadraticCurveTo(vp[i], vp[i + 1], vp[i + 2], vp[i + 3]);
+                    } else {
+                        ctx.quadraticCurveTo(vp[i], vp[i + 1], (vp[i] + vp[i + 2]) / 2, ((vp[i + 1] + vp[i + 3]) / 2));
+                    }
+                }
+                ctx.stroke();
+            }
+
         }
-        ctx.stroke();
+
+
 
         if (this.debug) {
             ctx.beginPath();
-            ctx.globalAlpha = 0.3
+            ctx.globalAlpha = 0.4
             ctx.moveTo(points[0], points[1]);
             for (let i = 2, len = points.length; i < len; i += 2) {
                 ctx.lineTo(points[i], points[i + 1]);
@@ -107,21 +177,6 @@ class SmoothCurve {
             ctx.stroke();
         }
 
-        var vision = this.vision
-        for (let i = 0, len = vision.length; i < len; i++) {
-            ctx.globalAlpha = i / this.visionMax * this.visionAlpha
-            let vp = vision[i]
-            ctx.beginPath();
-            ctx.moveTo(vp[0], vp[1]);
-            for (let i = 2, vlen = vp.length; i < vlen; i += 2) {
-                if (i === points.length - 4) {
-                    ctx.quadraticCurveTo(vp[i], vp[i + 1], vp[i + 2], vp[i + 3]);
-                } else {
-                    ctx.quadraticCurveTo(vp[i], vp[i + 1], (vp[i] + vp[i + 2]) / 2, ((vp[i + 1] + vp[i + 3]) / 2));
-                }
-            }
-            ctx.stroke();
-        }
         ctx.restore()
 
         this.afterDraw.call(this, ctx)

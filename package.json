@@ -9,6 +9,7 @@
     "build": "npm run dev&&npm run dist",
     "simple": "rollup -c -w",
     "word": "rollup -c -w",
+    "rope": "rollup -c -w",
     "water": "rollup -c -w",
     "smooth": "rollup -c -w",
     "sprout": "rollup -c -w",
