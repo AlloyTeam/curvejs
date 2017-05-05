@@ -59,7 +59,7 @@ let curve = new SmoothCurve({
     color:["#754726","#42270C"],
     points: points,
     disableVision:true,
-    size:2
+    size:4
 })
 
 stage.add(curve)
