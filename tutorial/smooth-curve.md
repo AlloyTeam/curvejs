@@ -9,7 +9,7 @@
 
 ![usage](http://images0.cnblogs.com/blog2015/105416/201508/251940011098732.png)
 
-线性报表
+线性报表中的折线Smooth化:
 
 ![usage](http://images0.cnblogs.com/blog2015/105416/201508/251939511257781.png)
 
