@@ -1,26 +1,26 @@
-﻿## 写在前面
-这个东西其实是有价值的东西。因为在软体模拟、数学方程可视化、流体模拟、数据可视化等等方面都有其用武之地。
+﻿## 折线平滑方案演进
+
+平滑折线的场景还是蛮多的，如软体模拟、数学方程可视化、流体模拟、数据可视化、屏保程序[curvejs](https://github.com/AlloyTeam/curvejs)等等方面都有其用武之地。
 
 如水的模拟：
 
 ![usage](http://images0.cnblogs.com/blog2015/105416/201508/251939571561058.png)
 
-心形函数方程转图像
+心形函数方程转图像,因为方程的输入和输出是无限多个，需要绘制方程图像可以只绘制其中一部分点，然后再smooth点连接起的折线。
 
 ![usage](http://images0.cnblogs.com/blog2015/105416/201508/251940011098732.png)
 
-线性报表中的折线Smooth化:
+线性报表中的折线smooth化:
 
 ![usage](http://images0.cnblogs.com/blog2015/105416/201508/251939511257781.png)
 
-本文将使用两种方式将折线平滑化:
+本文将使用两种方式将折线平滑化，并对比其优劣点:
 
 * 通过三次贝塞尔曲线将有限个数的点平滑化
 * 通过二次贝塞尔曲线将有限个数的点平滑化
 
 ## 问题建模
 已知若干个点，绘制出该点连接的曲线。
-
 
 ```javascript
 <canvas width="480" height="480"></canvas>
@@ -35,7 +35,7 @@
 
 这里实验平台使用浏览器环境，即Canvas相关API以及javascript语言。
 
-这里canvas的上下文对象拥有了bezierCurveTo方法，故免去了自己实现bezierCurveTo的一些事情。
+这里canvas的上下文对象拥有了bezierCurveTo方法:
 
 ```javascript
 context.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y);
@@ -123,7 +123,7 @@ function getControlPoint(path) {
 * [在线演示](https://alloyteam.github.io/curvejs/asset/smooth.html)
 * [源码](https://github.com/AlloyTeam/curvejs/blob/master/asset/smooth.html)
 
-## 三次贝塞尔平滑图解
+## 二次贝塞尔平滑图解
 
 ![](http://images2015.cnblogs.com/blog/105416/201705/105416-20170508113858863-1718221525.jpg)
 
@@ -133,6 +133,14 @@ function getControlPoint(path) {
 * 除了起始线段和终点线段，其余线段的**中点**全变成二次贝塞尔曲线的起点和终点
 
 ### 代码
+
+这里canvas的上下文对象拥有了quadraticCurveTo方法:
+
+```javascript
+context.quadraticCurveTo(cpx,cpy,x,y);
+```
+
+具体实现:
 
 ``` js
 ctx.beginPath();
