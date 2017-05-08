@@ -13,7 +13,10 @@
 
 ![usage](http://images0.cnblogs.com/blog2015/105416/201508/251939511257781.png)
 
-其原理都是通过三次贝塞尔曲线将有限个数的点平滑化。
+本文将使用两种方式将折线平滑化:
+
+* 通过三次贝塞尔曲线将有限个数的点平滑化
+* 通过二次贝塞尔曲线将有限个数的点平滑化
 
 ## 问题建模
 已知若干个点，绘制出该点连接的曲线。
@@ -39,7 +42,7 @@ context.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y);
 ```
 
 
-## 实现图解
+## 三次贝塞尔平滑图解
 实现目标
 
 ![usage](http://images0.cnblogs.com/blog2015/105416/201508/252022052033323.png)
@@ -48,7 +51,7 @@ context.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y);
 ![usage](http://images0.cnblogs.com/blog2015/105416/201508/252022149062488.png)
 
 
-## 代码
+### 代码
 Vector2，一般用来表示向量，但有的时候也用来当作点来进行一计算。
 ```javascript
 var Vector2 = function(x, y) {
@@ -87,6 +90,7 @@ Vector2.prototype = {
 * angle方法用来求两个向量的夹角
 
 核心方法，根据path上的点，求出所有贝塞尔曲线控制点。
+
 ```javascript
 function getControlPoint(path) {
     var rt = 0.3;
@@ -114,7 +118,36 @@ function getControlPoint(path) {
 }
 ```
 
-## Demo&Source
+### Demo&Source
 
 * [在线演示](https://alloyteam.github.io/curvejs/asset/smooth.html)
 * [源码](https://github.com/AlloyTeam/curvejs/blob/master/asset/smooth.html)
+
+## 三次贝塞尔平滑图解
+
+![](http://images2015.cnblogs.com/blog/105416/201705/105416-20170508113858863-1718221525.jpg)
+
+如上图所示:
+
+* 除了起点和终点，其余这线上的点全变成二次贝塞尔曲线上的控制点
+* 除了起始线段和终点线段，其余线段的**中点**全变成二次贝塞尔曲线的起点和终点
+
+### 代码
+
+``` js
+ctx.beginPath();
+ctx.moveTo(points[0], points[1]);
+for (let i = 2, len = points.length; i < len; i += 2) {
+    if (i === points.length - 4) {
+        ctx.quadraticCurveTo(points[i], points[i + 1], points[i + 2], points[i + 3]);
+    } else {
+        ctx.quadraticCurveTo(points[i], points[i + 1], (points[i] + points[i + 2]) / 2, ((points[i + 1] + points[i + 3]) / 2));
+    }
+}
+ctx.stroke();
+``` 
+
+### Demo&Source
+
+* [在线演示](https://alloyteam.github.io/curvejs/asset/smooth2.html)
+* [源码](https://github.com/AlloyTeam/curvejs/blob/master/src/smooth-curve.js)
