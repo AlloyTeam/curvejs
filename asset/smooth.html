@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>折线转曲线</title>
+</head>
+<body>
+<a href="//alloyteam.github.io/curvejs/asset/smooth.html" target="_blank" style="position: absolute;z-index: 1000; right: 0; top: 0;">
+    <img src="//alloyteam.github.io/curvejs/asset/github.png" alt="" />
+</a>
+<canvas id="canvas" width="600" height="300" ></canvas>
+<script >
+    var Vector2 = function(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    Vector2.prototype = {
+        "length": function () {
+            return Math.sqrt(this.x * this.x + this.y * this.y);
+        },
+        "normalize": function () {
+            var inv = 1 / this.length();
+            return new Vector2(this.x * inv, this.y * inv);
+        },
+        "add": function (v) {
+            return new Vector2(this.x + v.x, this.y + v.y);
+        },
+        "multiply": function (f) {
+            return new Vector2(this.x * f, this.y * f);
+        },
+        "dot": function (v) {
+            return this.x * v.x + this.y * v.y;
+        },
+        "angle": function (v) {
+            return Math.acos(this.dot(v) / (this.length() *v.length())) * 180 / Math.PI;
+        }
+    }
+</script>
+<script>
+    function getControlPoint(path) {
+
+        var rt = 0.2;
+        var i = 0, count = path.length - 2;
+        var arr = [];
+        for (; i < count; i++) {
+            var a = path[i], b = path[i + 1], c = path[i + 2];
+            var v1 = new Vector2(a.x - b.x, a.y - b.y);
+            var v2 = new Vector2(c.x - b.x, c.y - b.y);
+            var v1Len = v1.length(), v2Len = v2.length();
+            var centerV = v1.normalize().add(v2.normalize()).normalize();
+
+            var ncp1 = new Vector2(centerV.y, centerV.x * -1);
+            var ncp2 = new Vector2(centerV.y * -1, centerV.x);
+            if (ncp1.angle(v1) < 90) {
+                var p1 = ncp1.multiply(v1Len * rt).add(b);
+                var p2 = ncp2.multiply(v2Len * rt).add(b);
+                arr.push(p1, p2)
+            } else {
+                var p1 = ncp1.multiply(v2Len * rt).add(b);
+                var p2 = ncp2.multiply(v1Len * rt).add(b);
+
+                arr.push(p2, p1)
+            }
+
+        }
+        return arr;
+    }
+
+    function draw(path, ctx) {
+        ctx.clearRect(0, 0, 600, 300);
+        var cps = getControlPoint(path);
+        ctx.beginPath();
+        ctx.moveTo(path[0].x, path[0].y);
+        var i = 1, len = path.length;
+        ctx.strokeStyle = "black";
+        for (; i < len; i++) {
+            ctx.lineTo(path[i].x, path[i].y);
+        }
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(path[0].x, path[0].y);
+        ctx.bezierCurveTo(path[0].x, path[0].y, cps[0].x, cps[0].y, path[1].x, path[1].y);
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+
+        var j = 1, count = len-2;
+        for (; j < count; j++) {
+            ctx.beginPath();
+            ctx.moveTo(path[j].x, path[j].y);
+
+            ctx.bezierCurveTo(cps[j * 2 - 1].x, cps[j * 2 - 1].y, cps[j*2].x, cps[j*2].y, path[j + 1].x, path[j + 1].y);
+            ctx.strokeStyle = "red";
+            ctx.stroke();
+        }
+
+        var cpLen = cps.length;
+        ctx.beginPath();
+        ctx.moveTo(path[len - 2].x, path[len - 2].y);
+        ctx.bezierCurveTo(cps[cpLen - 1].x, cps[cpLen - 1].y, path[len - 1].x, path[len - 1].y, path[len - 1].x, path[len - 1].y);
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+
+        for (var i = 0, len = cps.length; i < len; i++) {
+            drawPoint(cps[i].x, cps[i].y, ctx);
+        }
+
+        for ( i = 0; i < len; i+=2) {
+            drawLine(cps[i].x, cps[i].y, cps[i+1].x, cps[i+1].y, ctx);
+        }
+
+    }
+
+    function drawPoint(x, y, ctx) {
+        ctx.beginPath();
+        ctx.fillStyle = "blue";
+        ctx.arc(x, y, 2, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    function drawLine(x1,y1,x2,y2, ctx) {
+        ctx.beginPath();
+        ctx.strokeStyle = "blue";
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+    }
+
+    function random(min,max) {
+        return min + Math.floor(Math.random() * (max - min + 1));
+    }
+
+
+    var ctx = document.getElementById('canvas').getContext("2d");
+
+    draw([{ x: random(10, 50), y: random(150, 250) }, { x: random(50, 100), y: random(10, 50) }, { x: random(150, 200), y: random(150, 250) }, { x: random(200, 350), y: random(10, 50) }, { x: random(350, 450), y: random(150, 250) }, { x: random(450, 550), y: random(10, 50) }], ctx);
+    setInterval(function () {
+        draw([{ x: random(10, 50), y: random(150, 250) }, { x: random(50, 100), y: random(10, 50) }, { x: random(150, 200), y: random(150, 250) }, { x: random(200, 350), y: random(10, 50) }, { x: random(350, 450), y: random(150, 250) }, { x: random(450, 550), y: random(10, 50) }], ctx);
+    }, 2000);
+
+
+
+
+</script>
+</body>
+</html>
