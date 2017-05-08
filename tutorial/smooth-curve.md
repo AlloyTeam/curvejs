@@ -1,4 +1,4 @@
-﻿## 折线平滑方案演进
+﻿# 折线平滑方案演进
 
 平滑折线的场景还是蛮多的，如软体模拟、数学方程可视化、流体模拟、数据可视化、屏保程序[curvejs](https://github.com/AlloyTeam/curvejs)等等方面都有其用武之地。
 
@@ -159,3 +159,11 @@ ctx.stroke();
 
 * [在线演示](https://alloyteam.github.io/curvejs/asset/smooth2.html)
 * [源码](https://github.com/AlloyTeam/curvejs/blob/master/src/smooth-curve.js)
+
+## 两种方案对比
+
+* 三次贝塞尔平滑方案曲线**经过**折线上线段的起点和中点
+* 二次贝塞尔平滑方案曲线**不经过**折线上线段的起点和中点
+* 三次贝塞尔平滑方案计算量远大于二次贝塞尔平滑方案
+* 三次贝塞尔平滑方案在进行交叉或者碰撞检测时显得更加精确
+* 二次贝塞尔平滑方案在进行交叉或者碰撞检测时显得不够精确
