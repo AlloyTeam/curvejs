@@ -1,4 +1,4 @@
-﻿##写在前面
+﻿## 写在前面
 这个东西其实是有价值的东西。因为在软体模拟、数学方程可视化、流体模拟、数据可视化等等方面都有其用武之地。
 
 如水的模拟：
@@ -15,7 +15,7 @@
 
 其原理都是通过三次贝塞尔曲线将有限个数的点平滑化。
 
-##问题建模
+## 问题建模
 已知若干个点，绘制出该点连接的曲线。
 
 
@@ -39,7 +39,7 @@ context.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y);
 ```
 
 
-##实现图解
+## 实现图解
 实现目标
 
 ![usage](http://images0.cnblogs.com/blog2015/105416/201508/252022052033323.png)
@@ -48,7 +48,7 @@ context.bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y);
 ![usage](http://images0.cnblogs.com/blog2015/105416/201508/252022149062488.png)
 
 
-##代码
+## 代码
 Vector2，一般用来表示向量，但有的时候也用来当作点来进行一计算。
 ```javascript
 var Vector2 = function(x, y) {
@@ -77,19 +77,14 @@ Vector2.prototype = {
     }
 }
 ```
-其中
-length求向量长度
+其中:
 
-normalize转单位向量
-
-add向量叠加
-
-multiply向量翻倍
-
-dot内积
-
-angle方法用来求两个向量的夹角
-
+* length求向量长度
+* normalize转单位向量
+* add向量叠加
+* multiply向量翻倍
+* dot内积
+* angle方法用来求两个向量的夹角
 
 核心方法，根据path上的点，求出所有贝塞尔曲线控制点。
 ```javascript
@@ -119,6 +114,7 @@ function getControlPoint(path) {
 }
 ```
 
-##Demo
+## Demo&Source
 
-[点我点我](https://alloyteam.github.io/curvejs/asset/smooth.html)
+* [在线演示](https://alloyteam.github.io/curvejs/asset/smooth.html)
+* [源码](https://github.com/AlloyTeam/curvejs/blob/master/asset/smooth.html)
