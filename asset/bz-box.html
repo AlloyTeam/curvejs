@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <canvas width="800" height="600" id="myCanvas" style="border:1px solid #ccc;"></canvas>
+    <script>
+
+        (function() {
+
+            function solve(a, b, c) {
+                var s = b * b - 4 * a * c;
+                if (a !== 0 && s >= 0) {
+                    var t = Math.sqrt(s)
+                    var q = 1 / (2 * a)
+                    return [(-b + t) * q, (-b - t) * q]
+                }
+                return []
+            }
+
+
+            function b1(t) {
+                return (1 - t) * (1 - t) * (1 - t)
+            }
+            function b2(t) {
+                return 3 * t * (1 - t) * (1 - t)
+            }
+
+            function b3(t) {
+                return 3 * t * t * (1 - t)
+            }
+            function b4(t) {
+                return t * t * t
+            }
+
+
+            function getValue(p1x, p1y, c1x, c1y, c2x, c2y, p2x, p2y, t) {
+                if(t<0||t>1)return []
+                return [
+                    p1x * b1(t) + c1x * b2(t) + c2x * b3(t) + p2x * b4(t),
+                    p1y * b1(t) + c1y * b2(t) + c2y * b3(t) + p2y * b4(t)
+                ]
+
+            }
+
+            function getBox(p1x, p1y, c1x, c1y, c2x, c2y, p2x, p2y) {
+
+//                 -3 * t * t + 6 * t - 3
+//                 9 * t * t -12 * t + 3
+//                 6 * t - 9 * t * t
+//                 3 * t * t
+//                  [
+//                      [-3, 9, -9, 3],
+//                      [6, -12, 6, 0],
+//                      [-3, 3, 0, 0]
+//                  ]
+
+                var ax = p1x * -3 + c1x * 9 - 9 * c2x + 3 * p2x
+                var bx = p1x * 6 - c1x * 12 + 6 * c2x
+                var cx = p1x * -3 + c1x * 3
+
+
+                var ay = p1y * -3 + c1y * 9 - 9 * c2y + 3 * p2y
+                var by = p1y * 6 - c1y * 12 + 6 * c2y
+                var cy = p1y * -3 + c1y * 3
+
+
+                var arr = solve(ax, bx, cx)
+                        .concat(solve(ay, by, cy))
+
+                var i = 0,
+                        len = arr.length;
+
+                var points = []
+                for (; i < len; i++) {
+                    points.push.apply(points, getValue(p1x, p1y, c1x, c1y, c2x, c2y, p2x, p2y, arr[i]))
+                }
+
+                points.push(p1x, p1y, p2x, p2y)
+                return getBoxByPoints(points)
+            }
+
+            function getBoxByPoints(points) {
+                var i = 2,
+                        len = points.length,
+                        minX = points[0],
+                        maxX = minX,
+                        minY = points[1],
+                        maxY = minY,
+                        cx,
+                        cy
+
+                for (; i < len; i += 2) {
+                    cx = points[i]
+                    cy = points[i + 1]
+                    if (cx < minX) {
+                        minX = cx
+                    }
+                    if (cx > maxX) {
+                        maxX = cx
+                    }
+                    if (cy < minY) {
+                        minY = cy
+                    }
+                    if (cy > maxY) {
+                        maxY = cy
+                    }
+                }
+
+                return [minX, minY, maxX - minX, maxY - minY]
+            }
+
+            var curve = {}
+
+            curve.getBox = getBox
+
+            window.curve = curve
+        })()
+
+        var points = [ 139, 121, 24, 14, 129, 379, 374, 284]
+        var box = curve.getBox.apply(null, points)
+
+
+        var canvas = document.querySelector('#myCanvas')
+        var ctx = canvas.getContext('2d')
+
+        ctx.moveTo(points[0],points[1])
+        ctx.bezierCurveTo(points[2],points[3],points[4],points[5],points[6],points[7])
+        ctx.stroke()
+
+        ctx.strokeRect.apply(ctx,box)
+    </script>
+
+    <a href="https://github.com/AlloyTeam/curvejs/blob/master/asset/bz-box.html" target="_blank" style="position: absolute;z-index: 1000; right: 0; top: 0;">
+        <img src="//alloyteam.github.io/curvejs/asset/github.png" alt="" />
+    </a>
+</body>
+</html>
