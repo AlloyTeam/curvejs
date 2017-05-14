@@ -21,18 +21,18 @@
             }
 
 
+
             function b1(t) {
-                return (1 - t) * (1 - t) * (1 - t)
+                return t * t * t
             }
             function b2(t) {
-                return 3 * t * (1 - t) * (1 - t)
-            }
-
-            function b3(t) {
                 return 3 * t * t * (1 - t)
             }
+            function b3(t) {
+                return 3 * t * (1 - t) * (1 - t)
+            }
             function b4(t) {
-                return t * t * t
+                return (1 - t) * (1 - t) * (1 - t)
             }
 
 
@@ -47,24 +47,24 @@
 
             function getBox(p1x, p1y, c1x, c1y, c2x, c2y, p2x, p2y) {
 
-//                 -3 * t * t + 6 * t - 3
-//                 9 * t * t -12 * t + 3
-//                 6 * t - 9 * t * t
 //                 3 * t * t
+//                6 * t - 9 * t * t
+//                9 * t * t -12 * t + 3
+//                -3 * t * t + 6 * t - 3
 //                  [
-//                      [-3, 9, -9, 3],
-//                      [6, -12, 6, 0],
-//                      [-3, 3, 0, 0]
+//                      [ 3,-9,9,-3],
+//                      [ 0,6,-12,6],
+//                      [ 0, 0,3,-3]
 //                  ]
 
-                var ax = p1x * -3 + c1x * 9 - 9 * c2x + 3 * p2x
-                var bx = p1x * 6 - c1x * 12 + 6 * c2x
-                var cx = p1x * -3 + c1x * 3
+                var ax = p1x * 3 - c1x * 9 + 9 * c2x - 3 * p2x
+                var bx = c1x * 6 - 12 * c2x + 6 * p2x
+                var cx =   3 * c2x - 3 * p2x
 
 
-                var ay = p1y * -3 + c1y * 9 - 9 * c2y + 3 * p2y
-                var by = p1y * 6 - c1y * 12 + 6 * c2y
-                var cy = p1y * -3 + c1y * 3
+                var ay = p1y * 3 - c1y * 9 + 9 * c2y - 3 * p2y
+                var by = c1y * 6 - 12 * c2y + 6 * p2y
+                var cy =   3 * c2y - 3 * p2y
 
 
                 var arr = solve(ax, bx, cx)
