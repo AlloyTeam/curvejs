@@ -13,6 +13,7 @@ Made curve a dancer in HTML5 canvas.
 
 ## Demos
 
+* [Loading](https://alloyteam.github.io/curvejs/example/loading/)
 * [Rope](https://alloyteam.github.io/curvejs/example/rope/)
 * [Siri-Wave](https://alloyteam.github.io/curvejs/example/siri-wave/)
 * [Water](https://alloyteam.github.io/curvejs/example/water/)

@@ -37,6 +37,7 @@ tick()
 
 当然，curvejs的能力不仅仅是变换线，这完全取决于你的想象力。比如：
 
+* [Loading](https://alloyteam.github.io/curvejs/example/loading/)
 * [Rope](https://alloyteam.github.io/curvejs/example/rope/)
 * [Siri-Wave](https://alloyteam.github.io/curvejs/example/siri-wave/)
 * [Water](https://alloyteam.github.io/curvejs/example/water/)
