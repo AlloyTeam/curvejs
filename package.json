@@ -41,7 +41,7 @@
     "lib",
     "dist"
   ],
-  "homepage": "https://github.com/AlloyTeam/curvejss",
+  "homepage": "https://github.com/AlloyTeam/curvejs",
   "dependencies": {},
   "devDependencies": {
     "babel-plugin-external-helpers": "^6.18.0",
