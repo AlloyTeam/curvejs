@@ -4,9 +4,6 @@
 <p align="center">
 Made curve a dancer in HTML5 canvas. 
 </p>
-<p align="center">
-  <a href="https://travis-ci.org/AlloyTeam/omi"><img src="https://travis-ci.org/AlloyTeam/omi.svg"></a>
-</p>
 
 ---
 ## [中文README](https://github.com/AlloyTeam/curvejs/blob/master/README-CN.md)
