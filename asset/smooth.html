@@ -19,7 +19,13 @@
             return Math.sqrt(this.x * this.x + this.y * this.y);
         },
         "normalize": function () {
-            var inv = 1 / this.length();
+            var len = this.length(),
+                inv = 0;
+            if (len === 0) {
+                inv = 0;
+            } else {
+                inv = 1/len;
+            }
             return new Vector2(this.x * inv, this.y * inv);
         },
         "add": function (v) {
